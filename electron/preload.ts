@@ -18,6 +18,14 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     const [channel, ...omit] = args
     return ipcRenderer.invoke(channel, ...omit)
   },
+  // Expose openFolder dialog function to renderer process
+  openFolder: async () => {
+    return await ipcRenderer.invoke('open-folder')
+  },
+  // Expose saveFile dialog function to renderer process
+  saveFile: async (files: {filename: string, data: string}[]) => {
+    return await ipcRenderer.invoke('save-file', files)
+  }
 
   // You can expose other APTs you need here.
   // ...
