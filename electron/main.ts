@@ -33,10 +33,10 @@ let win: BrowserWindow | null;
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: icon,
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
     },
+    autoHideMenuBar: true,
   });
 
   // Test active push message to Renderer-process.
