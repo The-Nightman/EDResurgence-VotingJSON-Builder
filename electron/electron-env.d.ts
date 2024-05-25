@@ -1,5 +1,7 @@
 /// <reference types="vite-plugin-electron/electron-env" />
 
+import { IpcRenderer } from 'electron';
+
 declare namespace NodeJS {
   interface ProcessEnv {
     /**
@@ -31,7 +33,7 @@ interface Window {
 /**
  * Represents the IPC renderer interface for communication between the main and renderer processes.
  */
-export interface MyIpcRenderer {
+export interface MyIpcRenderer extends IpcRenderer {
   /**
    * Opens a folder and returns an object with maps and types properties containing an array of strings.
    * @returns A promise that resolves to an object with maps and types properties, or null if the folder cannot be opened.
