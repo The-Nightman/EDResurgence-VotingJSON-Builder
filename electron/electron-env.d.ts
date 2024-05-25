@@ -25,3 +25,30 @@ declare namespace NodeJS {
 interface Window {
   ipcRenderer: import('electron').IpcRenderer
 }
+
+// Used in Main process, expose in `main.ts`
+// Used to extend the `ipcRenderer` object
+/**
+ * Represents the IPC renderer interface for communication between the main and renderer processes.
+ */
+export interface MyIpcRenderer {
+  /**
+   * Opens a folder and returns an object with maps and types properties containing an array of strings.
+   * @returns A promise that resolves to an object with maps and types properties, or null if the folder cannot be opened.
+   */
+  openFolder(): Promise<{ maps: string[]; types: string[] } | null>;
+
+  /**
+   * Saves files with the provided filenames and data.
+   * @param files - An array of objects representing the files to be saved. Each object should have a filename and data property.
+   * @returns A promise that resolves when the files are successfully saved.
+   */
+  saveFile(files: { filename: string; data: string }[]): Promise<void>;
+}
+
+// Add `MyIpcRenderer` to `ipcRenderer` and add to the `window` object
+declare global {
+  interface Window {
+    ipcRenderer: MyIpcRenderer
+  }
+}
