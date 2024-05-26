@@ -13,3 +13,16 @@
 body {
   font-family: 'ConduitITC', sans-serif;
 }
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a3bbd8;
+  border-radius: 20px;
+}
