@@ -1,7 +1,5 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/electron-vite.animate.svg";
-import "./App.css";
+import { Sidebar } from "./components";
 
 interface mapsVariantsData {
   maps: string[];
@@ -14,7 +12,7 @@ interface toastState {
   color: string;
 }
 
-function App() {
+const App = () => {
   const [toastState, setToastState] = useState<toastState>({
     show: false,
     message: "",
@@ -87,25 +85,27 @@ function App() {
 
   return (
     <>
-      <button onClick={handleFolder}>Open Folder</button>
-      <button onClick={handleSave}>Save JSON</button>
-      <div>
-        <a href="https://electron-vite.github.io" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    {/* top bar when frame is removed */}
+      <div className="flex flex-row w-full justify-between">
+        <div>
+          <button
+            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            onClick={handleFolder}
+          >
+            Open Folder
+          </button>
+          <button
+            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            onClick={handleSave}
+          >
+            Save JSON
+          </button>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="flex">
+        <Sidebar mapsVariantsData={mapsVariantsData} />
+        <div></div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
