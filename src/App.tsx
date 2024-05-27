@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { Sidebar } from "./components";
-
-interface mapsVariantsData {
-  maps: string[];
-  variants: string[];
-}
+import { Sidebar, TypeForm } from "./components";
+import { MapsVariantsData } from "./interfaces";
 
 interface toastState {
   show: boolean;
@@ -18,10 +14,11 @@ const App = () => {
     message: "",
     color: "",
   });
-  const [mapsVariantsData, setMapsVariantsData] = useState<mapsVariantsData>({
+  const [mapsVariantsData, setMapsVariantsData] = useState<MapsVariantsData>({
     maps: [],
     variants: [],
   });
+  const [typeForms, setTypeForms] = useState<number[]>([]);
 
   /**
    * Handler function for opening a folder and setting the maps and variants data.
@@ -83,10 +80,20 @@ const App = () => {
     }
   };
 
+  /**
+   * Creates a new type form.
+   * Adds a new element to the typeForms state rendering a new form.
+   */
+  const createNewType = () => {
+    // copy array and add new element using the current
+    // length of the array as value matching the index
+    setTypeForms([...typeForms, typeForms.length]);
+  };
+
   return (
     <>
-    {/* top bar when frame is removed */}
-      <div className="flex flex-row w-full justify-between">
+      {/* top bar when frame is removed */}
+      <div className="fixed top-0 flex flex-row w-full justify-between">
         <div>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
@@ -102,12 +109,20 @@ const App = () => {
           </button>
         </div>
       </div>
-      <div className="flex">
-        <Sidebar mapsVariantsData={mapsVariantsData} />
+      <Sidebar mapsVariantsData={mapsVariantsData} />
+      <div className="flex flex-col mt-8 px-8">
+        {typeForms.map((_type, index) => (
+          <TypeForm
+            key={index}
+            mapsVariantsData={mapsVariantsData}
+            index={index}
+          />
+        ))}
+        <button onClick={createNewType}>add type</button>
         <div></div>
       </div>
     </>
   );
-}
+};
 
 export default App;
