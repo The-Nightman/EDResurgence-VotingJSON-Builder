@@ -1,19 +1,16 @@
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useState } from "react";
+import { MapsVariantsData } from "../interfaces";
 
 interface SidebarProps {
-  mapsVariantsData: {
-    maps: string[];
-    variants: string[];
-  };
+  mapsVariantsData: MapsVariantsData;
 }
 
 /**
  * Sidebar component that displays gametypes and maps from the target directories.
  *
- * @param {Object} mapsVariantsData - The data containing maps and variants.
- * @param {string[]} mapsVariantsData.maps - The maps data.
- * @param {string[]} mapsVariantsData.variants - The variants data.
+ * @param {SidebarProps} props - The props of the Sidebar component.
+ * @param {MapsVariantsData} props.mapsVariantsData - The object containing the maps and variants data.
  * @returns {JSX.Element} The rendered Sidebar component.
  */
 export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
