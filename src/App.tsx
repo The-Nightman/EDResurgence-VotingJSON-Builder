@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Sidebar, TypeForm } from "./components";
 import { MapObj, MapsVariantsData, TypeObj } from "./interfaces";
 
-interface toastState {
-  show: boolean;
-  message: string;
-  color: string;
-}
+// interface toastState {
+//   show: boolean;
+//   message: string;
+//   color: string;
+// }
 
 const App = () => {
   const [jsonData, setJsonData] = useState<{
@@ -22,11 +22,11 @@ const App = () => {
     ],
     types: [],
   });
-  const [toastState, setToastState] = useState<toastState>({
-    show: false,
-    message: "",
-    color: "",
-  });
+  // const [toastState, setToastState] = useState<toastState>({
+  //   show: false,
+  //   message: "",
+  //   color: "",
+  // });
   const [mapsVariantsData, setMapsVariantsData] = useState<MapsVariantsData>({
     maps: [],
     variants: [],
@@ -57,11 +57,11 @@ const App = () => {
     } catch (error) {
       // catch errors i.e. if the map_variants and game_variants directories are not found
       // set the toast state with the error message
-      setToastState({
-        show: true,
-        message: (error as Error).message,
-        color: "red",
-      });
+      // setToastState({
+      //   show: true,
+      //   message: (error as Error).message,
+      //   color: "red",
+      // });
     }
   };
 
@@ -131,11 +131,11 @@ const App = () => {
     } catch (error) {
       // catch errors if the file write operation fails
       // set the toast state with the error message
-      setToastState({
-        show: true,
-        message: (error as Error).message,
-        color: "red",
-      });
+      // setToastState({
+      //   show: true,
+      //   message: (error as Error).message,
+      //   color: "red",
+      // });
     }
   };
 
