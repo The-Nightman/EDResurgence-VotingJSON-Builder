@@ -6,6 +6,7 @@ import { Tooltip } from "@mui/material";
 interface TypeFormProps {
   mapsVariantsData: MapsVariantsData;
   index: number;
+  handleSaveDelete: (type: TypeObj, operation: "delete" | "save") => void;
 }
 
 /**
@@ -15,10 +16,16 @@ interface TypeFormProps {
  * @param {TypeFormProps} props - The component props.
  * @param {MapsVariantsData} props.mapsVariantsData - The data for maps and variants.
  * @param {number} props.index - The index of the variant in the parent state array.
+ * @param {(type: TypeObj, operation: "delete" | "save") => void} props.handleSaveDelete - The callback function to save or delete the variant.
  * @returns {JSX.Element} The rendered component.
  */
-export const TypeForm = ({ mapsVariantsData, index }: TypeFormProps) => {
+export const TypeForm = ({
+  mapsVariantsData,
+  index,
+  handleSaveDelete,
+}: TypeFormProps) => {
   const [typeFormData, setTypeFormData] = useState<TypeObj>({
+    id: index,
     displayName: "",
     typeName: "",
     modPack: "",
@@ -64,13 +71,13 @@ export const TypeForm = ({ mapsVariantsData, index }: TypeFormProps) => {
 
   /**
    * Handles the form submission.
-   * Saves the typeFormData obj to a state in parent component via passed callback fn.
-   * Not yet implemented.
+   * Calls the handleSaveDelete callback function with the typeFormData and "save" operation.
    *
    * @param {React.FormEvent} e - The form event.
    */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    handleSaveDelete(typeFormData, "save");
   };
 
   /**
@@ -152,16 +159,33 @@ export const TypeForm = ({ mapsVariantsData, index }: TypeFormProps) => {
               ? "New Variant"
               : typeFormData.typeName}
           </h2>
+          {/* Delete button */}
+          <button
+            title="Delete Type"
+            aria-label="Delete Type"
+            aria-description="Remove the Game Type from the JSON data"
+            className="text-2xl"
+            // type="button" to prevent form submission behaviour
+            type="button"
+            // onClick event to handle the deletion of the type
+            // calls the handleSaveDelete callback fn with the typeFormData and "delete" operation
+            onClick={() => handleSaveDelete(typeFormData, "delete")}
+          >
+            Delete
+          </button>
+          {/* Save button */}
           <button
             title="Save Type"
             aria-label="Save Type"
             aria-description="Save or Update Game Types to be written to the JSON"
             className="text-2xl"
+            // uses form submission behaviour to call the form onSubmit event
             type="submit"
           >
             Save
           </button>
         </div>
+        {/* Main form content */}
         <div>
           {/* Variant Settings */}
           <fieldset className="flex flex-row justify-between px-2 border-2 border-slate-900">
