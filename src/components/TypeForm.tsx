@@ -3,8 +3,10 @@ import { MapObj, MapsVariantsData, ModData, TypeObj } from "../interfaces";
 import { mods } from "../mods";
 import { Tooltip } from "@mui/material";
 import {
+  DeleteOutlineSharp,
   KeyboardArrowDownOutlined,
   KeyboardArrowUpOutlined,
+  SaveAsOutlined,
 } from "@mui/icons-material";
 
 interface TypeFormProps {
@@ -209,31 +211,33 @@ export const TypeForm = ({
                 : typeFormData.typeName}
             </h2>
           </div>
-          {/* Delete button */}
-          <button
-            title="Delete Type"
-            aria-label="Delete Type"
-            aria-description="Remove the Game Type from the JSON data"
-            className="text-2xl"
-            // type="button" to prevent form submission behaviour
-            type="button"
-            // onClick event to handle the deletion of the type
-            // calls the handleSaveDelete callback fn with the typeFormData and "delete" operation
-            onClick={() => handleSaveDelete(typeFormData, "delete")}
-          >
-            Delete
-          </button>
-          {/* Save button */}
-          <button
-            title="Save Type"
-            aria-label="Save Type"
-            aria-description="Save or Update Game Types to be written to the JSON"
-            className="text-2xl"
-            // uses form submission behaviour to call the form onSubmit event
-            type="submit"
-          >
-            Save
-          </button>
+          <div className="flex flex-row gap-6">
+            {/* Delete button */}
+            <button
+              title="Delete Type"
+              aria-label="Delete Type"
+              aria-description="Remove the Game Type from the JSON data"
+              className="h-8 w-10 text-2xl"
+              // type="button" to prevent form submission behaviour
+              type="button"
+              // onClick event to handle the deletion of the type
+              // calls the handleSaveDelete callback fn with the typeFormData and "delete" operation
+              onClick={() => handleSaveDelete(typeFormData, "delete")}
+            >
+              <DeleteOutlineSharp fontSize="large" />
+            </button>
+            {/* Save button */}
+            <button
+              title="Save/Update Type"
+              aria-label="Save or Update Type"
+              aria-description="Save or Update Game Types to be written to the JSON"
+              className="h-8 w-12 text-2xl"
+              // uses form submission behaviour to call the form onSubmit event
+              type="submit"
+            >
+              <SaveAsOutlined fontSize="large" />
+            </button>
+          </div>
         </div>
         {/* Main form content */}
         <div className={`${formState.formCollapsed && "hidden"}`}>
