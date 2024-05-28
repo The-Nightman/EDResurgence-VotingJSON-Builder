@@ -986,7 +986,7 @@ export const TypeForm = ({
             )}
             {/* Custom Maps */}
             <fieldset className="flex flex-row flex-wrap gap-4 px-2 border-2 border-slate-900">
-              <legend>Your Maps</legend>
+              <legend className="text-lg -ml-[0.375rem]">Your Maps</legend>
               {mapsVariantsData.maps.map((map) => (
                 <label className="w-32" key={map}>
                   <input
