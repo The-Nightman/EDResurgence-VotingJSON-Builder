@@ -17,13 +17,25 @@ export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   return (
-    <section
+    <aside
       className={`fixed top-9 ${
         sidebarOpen ? "right-0" : "-right-64"
       } h-[calc(100vh-2.25rem)] w-64 p-2 bg-[#004CB4]/50`}
     >
       <button
-        className={`fixed top-1/2 ${sidebarOpen ? "right-[17rem]" : "right-4"}`}
+        // due to nature of tailwind and component libraries an arbitrary value is used to target the svg element
+        // [&] represents the parent and [&_p] represents a p tag child of the element that the style is applied to
+        // this equates to .element > p in raw css
+        // [&_svg] svg element of the icon that is child to the button
+        // [&_svg>path] path child of the svg element
+        // [&_svg>path]:origin-[40%_50%] sets origin 40% from the left and 50% from the top when open
+        // [&_svg>path]:origin-[0%_50%] sets origin 0% from the left and 50% from the top when closed
+        // top-[49%] is used because for some reason top-1/2 doesn't center the button vertically
+        className={`fixed top-[49%] w-10 ${
+          sidebarOpen
+            ? "right-[16.2rem] [&_svg>path]:origin-[40%_50%]"
+            : "right-0 [&_svg>path]:origin-[0%_50%]"
+        } [&_svg]:h-14 [&_svg>path]:scale-[1.75]`}
         aria-label={`${sidebarOpen ? "Close" : "Open"} sidebar`}
         title={`${sidebarOpen ? "Close" : "Open"} sidebar`}
         // toggle sidebarOpen state to open and close the sidebar
@@ -57,6 +69,6 @@ export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
           </div>
         </article>
       </div>
-    </section>
+    </aside>
   );
 };
