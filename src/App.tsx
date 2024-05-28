@@ -76,10 +76,56 @@ const App = () => {
    * @returns {Promise<void>} - Returns a promise that is void on resolve.
    */
   const handleSave = async (): Promise<void> => {
+    // initialize a new object to store the mods json data with dynamic key names and nested object package_url values
+    const modsJson: { [key: string]: { package_url: string } } = {};
+    // clone the types array and remove unused or unnecessary property from each type object
+    const typesArr: TypeObj[] = JSON.parse(JSON.stringify(jsonData.types));
+    typesArr.forEach((type) => {
+      delete type.id;
+      // if randomchance is set to 0.1 the default value when the propery is absent, remove it
+      if (type.randomChance! < 0.2) {
+        delete type.randomChance;
+      }
+      // if modPack is not being used, remove it
+      if (type.modPack! === "") {
+        delete type.modPack;
+      }
+      // if commands or endOfMatchCommands are empty arrays, remove them
+      if (type.commands!.length === 0) {
+        delete type.commands;
+      }
+      if (type.endOfMatchCommands!.length === 0) {
+        delete type.endOfMatchCommands;
+      }
+    });
+    // create an array of modPack values from the types array
+    const modsArr: string[] = typesArr
+      // filter out types without a modPack property and map the modPack property values
+      .filter((type) => type.modPack !== undefined)
+      .map((type) => type.modPack!);
+    // create a new object to store the mods json data with key names from modsArr and nested object package_url values
+    modsArr.forEach((mod) => {
+      // e.g. this will create { "modPackName": { package_url: "" } }
+      modsJson[mod] = { package_url: "" };
+    });
+    // create an array of files to be saved
     const files = [
-      { filename: "voting.json", data: JSON.stringify({ hello: "world" }) },
-      { filename: "mods.json", data: JSON.stringify({ hello: "world" }) },
+      {
+        filename: "voting.json",
+        // stringify the jsonData object and prettify with 2 spaces for indentation
+        data: JSON.stringify(
+          { maps: [...jsonData.maps], types: typesArr },
+          null,
+          2
+        ),
+      },
+      {
+        filename: "mods.json",
+        // stringify the modsJson object and prettify with 2 spaces for indentation
+        data: JSON.stringify({ mods: modsJson }, null, 2),
+      },
     ];
+    // pass the files array to the main process to save the files
     try {
       await window.ipcRenderer.saveFile(files);
     } catch (error) {
