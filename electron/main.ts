@@ -1,11 +1,8 @@
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
-import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import icon from "../public/vite.svg";
 import path from "node:path";
 import fs from "fs/promises";
 
-const require = createRequire(import.meta.url);
 // get the current directory when running the application
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
