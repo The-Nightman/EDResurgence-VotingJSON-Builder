@@ -148,11 +148,14 @@ const App = () => {
   /**
    * Creates a new type form.
    * Adds a new element to the typeForms state rendering a new form.
+   * Generates unique element data by means of a millisecond timestamp.
    */
   const createNewType = () => {
     // copy array and add new element using the current
-    // length of the array as value matching the index
-    setTypeForms([...typeForms, typeForms.length]);
+    //! length of the array as value matching the index <-- DO NOT DO THIS, BREAKS RENDER WITH LIST KEYS AND FORM ID'S
+    // Generates a unique ID based on milliseconds since Unix epoch
+    //* Use this to prevent misalignment of form data ID and array elements
+    setTypeForms([...typeForms, Date.now()]);
   };
 
   /**
@@ -241,11 +244,11 @@ const App = () => {
       <Sidebar mapsVariantsData={mapsVariantsData} />
       <main className="flex flex-col my-16 px-8">
         <ol className="flex flex-col mb-6 gap-12">
-          {typeForms.map((_type, index) => (
+          {typeForms.map((typeNum, _index) => (
             <TypeForm
-              key={index}
+              key={typeNum}
               mapsVariantsData={mapsVariantsData}
-              index={index}
+              uid={typeNum}
               handleSaveDelete={handleJsonData}
             />
           ))}
