@@ -30,3 +30,11 @@ body::-webkit-scrollbar {
   background-color: #a3bbd8;
   border-radius: 20px;
 }
+
+#titlebar {
+  -webkit-app-region: drag;
+}
+
+#titlebar button {
+  -webkit-app-region: no-drag;
+}

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "fs/promises";
@@ -34,6 +34,7 @@ function createWindow() {
       preload: path.join(__dirname, "preload.mjs"),
     },
     autoHideMenuBar: true,
+    frame: false,
   });
 
   // Test active push message to Renderer-process.
@@ -176,4 +177,63 @@ app.whenReady().then(() => {
       });
     }
   );
+
+  /**
+   * Handle minimize-window IPC event from renderer process.
+   * The function minimizes the window.
+   *
+   * @async
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   *
+   * @returns {Promise<void>} - Returns a promise that is void on resolve.
+   *
+   * @example
+   * /// Minimizes the window.
+   * ipcMain.handle("minimize-window", async (_event) => {
+   *   /// function body
+   * });
+   */
+  ipcMain.handle("minimize-window", async (_event): Promise<void> => {
+    win?.minimize(); // minimize the window
+  });
+
+  /**
+   * Handle close-window IPC event from renderer process.
+   * The function closes the window.
+   *
+   * @async
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   *
+   * @returns {Promise<void>} - Returns a promise that is void on resolve.
+   *
+   * @example
+   * /// Closes the window.
+   * ipcMain.handle("close-window", async (_event) => {
+   *   /// function body
+   * });
+   */
+  ipcMain.handle("close-window", async (_event): Promise<void> => {
+    win?.close(); // close the window
+  });
+
+  /**
+   * Handle open-help IPC event from renderer process.
+   * The function opens the repo page in the users default browser.
+   *
+   * @async
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   *
+   * @returns {Promise<void>} - Returns a promise that is void on resolve.
+   *
+   * @example
+   * /// Opens the help file.
+   * ipcMain.handle("open-help", async (_event) => {
+   *   /// function body
+   * });
+   */
+  ipcMain.handle("open-help", async (_event): Promise<void> => {
+    shell.openExternal(
+      "https://github.com/The-Nightman/EDResurgence-VotingJSON-Builder"
+    );
+  });
 });
