@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Sidebar, TypeForm } from "./components";
 import { MapObj, MapsVariantsData, TypeObj } from "./interfaces";
+import {
+  Add,
+  CloseOutlined,
+  HelpOutline,
+  MinimizeOutlined,
+} from "@mui/icons-material";
 
 // interface toastState {
 //   show: boolean;
@@ -202,7 +208,10 @@ const App = () => {
   return (
     <>
       {/* top bar when frame is removed */}
-      <div className="fixed top-0 flex flex-row w-full justify-between bg-white">
+      <header className="fixed top-0 flex flex-row w-full justify-between bg-white">
+        <h1 className="fixed top-2 left-1/2 -translate-x-1/2 text-xl font-bold">
+          ElDewrito Resurgence 0.7 JSON Builder
+        </h1>
         <div>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
@@ -217,20 +226,38 @@ const App = () => {
             Save JSON
           </button>
         </div>
-      </div>
+        <div>
+          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl">
+            <HelpOutline />
+          </button>
+          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl">
+            <MinimizeOutlined />
+          </button>
+          <button className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl">
+            <CloseOutlined />
+          </button>
+        </div>
+      </header>
       <Sidebar mapsVariantsData={mapsVariantsData} />
-      <div className="flex flex-col gap-12 mt-16 px-8">
-        {typeForms.map((_type, index) => (
-          <TypeForm
-            key={index}
-            mapsVariantsData={mapsVariantsData}
-            index={index}
-            handleSaveDelete={handleJsonData}
-          />
-        ))}
-        <button onClick={createNewType}>add type</button>
-        <div></div>
-      </div>
+      <main className="flex flex-col my-16 px-8">
+        <ol className="flex flex-col mb-6 gap-12">
+          {typeForms.map((_type, index) => (
+            <TypeForm
+              key={index}
+              mapsVariantsData={mapsVariantsData}
+              index={index}
+              handleSaveDelete={handleJsonData}
+            />
+          ))}
+        </ol>
+        <button
+          className="flex flex-row py-1 justify-center items-center"
+          onClick={createNewType}
+        >
+          <Add fontSize="large" />
+          <span className="text-2xl">add type</span>
+        </button>
+      </main>
     </>
   );
 };
