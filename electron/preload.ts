@@ -25,6 +25,18 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   // Expose saveFile dialog function to renderer process
   saveFile: async (files: {filename: string, data: string}[]) => {
     return await ipcRenderer.invoke('save-file', files)
+  },
+  // Expose minimizeWindow function to renderer process
+  minimizeWindow: async () => {
+    return await ipcRenderer.invoke('minimize-window')
+  },
+  // Expose closeWindow function to renderer process
+  closeWindow: async () => {
+    return await ipcRenderer.invoke('close-window')
+  },
+  // Expose openHelp function to renderer process
+  openHelp: async () => {
+    return await ipcRenderer.invoke('open-help')
   }
 
   // You can expose other APTs you need here.

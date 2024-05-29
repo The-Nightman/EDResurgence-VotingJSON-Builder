@@ -46,6 +46,24 @@ export interface MyIpcRenderer extends IpcRenderer {
    * @returns A promise that resolves when the files are successfully saved.
    */
   saveFile(files: { filename: string; data: string }[]): Promise<void>;
+
+  /**
+   * Minimizes the window.
+   * @returns A promise that resolves when the window is minimized.
+   */
+  minimizeWindow(): Promise<void>;
+
+  /**
+   * Closes the window.
+   * @returns A promise that resolves when the window is closed.
+   */
+  closeWindow(): Promise<void>;
+
+  /**
+   * Opens the help dialog.
+   * @returns A promise that resolves when the help dialog is opened.
+   */
+  openHelp(): Promise<void>;
 }
 
 // Add `MyIpcRenderer` to `ipcRenderer` and add to the `window` object

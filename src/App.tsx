@@ -230,13 +230,13 @@ const App = () => {
           </button>
         </div>
         <div>
-          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl">
+          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl" onClick={window.ipcRenderer.openHelp}>
             <HelpOutline />
           </button>
-          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl">
+          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl" onClick={window.ipcRenderer.minimizeWindow}>
             <MinimizeOutlined />
           </button>
-          <button className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl">
+          <button className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl" onClick={window.ipcRenderer.closeWindow}>
             <CloseOutlined />
           </button>
         </div>
