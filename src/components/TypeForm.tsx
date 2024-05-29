@@ -172,9 +172,9 @@ export const TypeForm = ({
   };
 
   return (
-    <article>
+    <li>
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row flex-wrap justify-between">
           <div className="flex flex-row gap-2 justify-center">
             <button
               title={formState.formCollapsed ? "Expand Form" : "Collapse Form"}
@@ -242,7 +242,7 @@ export const TypeForm = ({
         {/* Main form content */}
         <div className={`${formState.formCollapsed && "hidden"}`}>
           {/* Variant Settings */}
-          <fieldset className="flex flex-row justify-between px-2 border-2 border-slate-900">
+          <fieldset className="flex flex-row flex-wrap gap-4 justify-between px-2 border-2 border-slate-900">
             <legend>Variant Settings</legend>
             <span className="sr-only">
               Select the Variant, Modpack and chance of appearing as a voting
@@ -1033,6 +1033,6 @@ export const TypeForm = ({
           </fieldset>
         </div>
       </form>
-    </article>
+    </li>
   );
 };
