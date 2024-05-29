@@ -171,6 +171,63 @@ export const TypeForm = ({
     }
   };
 
+  /**
+   * Handles the change event for the mod pack select element.
+   * Updates the type form data based on the selected mod pack value.
+   * If the modPack value changes to a value BOTH not in the selected mod pack and not an empty string,
+   * Or if the value changes to an empty string deselecting mods,
+   * Filters the specific maps array to remove any maps in the previously selected mod pack.
+   * @param {React.ChangeEvent<HTMLSelectElement>} e - The change event object.
+   *
+   * @example
+   * /// Modifies the typeFormData based on the selected mod pack value.
+   * handleModPackChange(e) => {
+   * /// function body
+   * /// if the value changes to a new mod pack or an empty string
+   *   if ((value !== selectedMod.modName && value !== "") || value === "") {
+   * /// filter the specific maps array to remove any maps in the previously selected mod pack
+   *     const filteredMaps = typeFormData.specificMaps.filter(
+   *       (map) => !selectedMod.modMaps.some((modMap) => modMap.mapName === map.mapName));
+   * /// set the typeFormData with the new mod pack and filtered maps
+   *     setTypeFormData({
+   *       ...typeFormData,
+   *       modPack: e.target.value,
+   *       specificMaps: filteredMaps,
+   *     });
+   *   }
+   *   else {
+   * /// set the typeFormData with the new mod pack
+   *     setTypeFormData({
+   *     ...typeFormData,
+   *     modPack: e.target.value,
+   *     });
+   *   }
+   * }
+   *
+   */
+  const handleModPackChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    // if the value changes to a new mod pack or an empty string, AND operation to check for 
+    // both conditions to prevent any possible breaking edge cases when going from no mod to mod
+    if ((value !== selectedMod.modName && value !== "") || value === "") {
+      const filteredMaps = typeFormData.specificMaps.filter(
+        (map) =>
+          // if the map is not found in the selected mod pack, keep it in the array
+          !selectedMod.modMaps.some((modMap) => modMap.mapName === map.mapName)
+      );
+      setTypeFormData({
+        ...typeFormData,
+        modPack: e.target.value,
+        specificMaps: filteredMaps,
+      });
+    } else {
+      setTypeFormData({
+        ...typeFormData,
+        modPack: e.target.value,
+      });
+    }
+  };
+
   return (
     <li>
       <form onSubmit={handleSubmit}>
@@ -285,12 +342,7 @@ export const TypeForm = ({
                   name="Modpack select"
                   aria-description="Select a Modpack to play with the Variant"
                   id="modPack"
-                  onChange={(e) => {
-                    setTypeFormData({
-                      ...typeFormData,
-                      modPack: e.target.value,
-                    });
-                  }}
+                  onChange={handleModPackChange}
                   defaultValue={""}
                 >
                   <option value="">None</option>
