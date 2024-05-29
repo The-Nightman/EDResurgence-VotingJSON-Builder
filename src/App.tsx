@@ -211,8 +211,8 @@ const App = () => {
   return (
     <>
       {/* top bar when frame is removed */}
-      <header className="fixed top-0 flex flex-row w-full justify-between bg-white">
-        <h1 className="fixed top-2 left-1/2 -translate-x-1/2 text-xl font-bold">
+      <header id="titlebar" className="fixed top-0 flex flex-row w-full justify-between border-b-[1px] bg-white select-none">
+        <h1 className="fixed top-[0.375rem] left-1/2 -translate-x-1/2 text-xl font-bold">
           ElDewrito Resurgence 0.7 JSON Builder
         </h1>
         <div>
