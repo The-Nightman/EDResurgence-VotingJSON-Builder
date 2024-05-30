@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { Sidebar, TypeForm } from "./components";
+import React, { useState } from "react";
+import {
+  OpenFolderDialog,
+  Sidebar,
+  TypeForm,
+  DialogFoundation,
+} from "./components";
 import { MapObj, MapsVariantsData, TypeObj } from "./interfaces";
 import {
   Add,
@@ -8,17 +13,18 @@ import {
   MinimizeOutlined,
 } from "@mui/icons-material";
 
-// interface toastState {
-//   show: boolean;
-//   message: string;
-//   color: string;
-// }
+interface JsonData {
+  maps: MapObj[];
+  types: TypeObj[];
+}
+
+interface DialogState {
+  show: boolean;
+  content: React.ReactElement;
+}
 
 const App = () => {
-  const [jsonData, setJsonData] = useState<{
-    maps: MapObj[];
-    types: TypeObj[];
-  }>({
+  const [jsonData, setJsonData] = useState<JsonData>({
     // fallback maps for test build purposes
     maps: [
       { displayName: "High Ground", mapName: "deadlock" },
@@ -28,11 +34,10 @@ const App = () => {
     ],
     types: [],
   });
-  // const [toastState, setToastState] = useState<toastState>({
-  //   show: false,
-  //   message: "",
-  //   color: "",
-  // });
+  const [dialogState, setDialogState] = useState<DialogState>({
+    show: false,
+    content: <></>,
+  });
   const [mapsVariantsData, setMapsVariantsData] = useState<MapsVariantsData>({
     maps: [],
     variants: [],
@@ -42,6 +47,9 @@ const App = () => {
   /**
    * Handler function for opening a folder and setting the maps and variants data.
    * Handles the frontend operation of the functions defined in the main process and preload context bridges.
+   * Creates a new blocking promise and sets the dialog state with the OpenFolderDialog component.
+   * The OpenFolderDialog component resolves the promise when the user performs an action firing the promise resolve.
+   * The dialog state is then set to false and the dialog content is set to an empty fragment.
    * If the folderData is not null, set the maps and variants data.
    * If an error occurs, set the toast state with the error message.
    *
@@ -50,6 +58,17 @@ const App = () => {
    */
   const handleFolder = async (): Promise<void> => {
     try {
+      // create a new blocking promise and set the dialog state with the OpenFolderDialog component
+      const newPromise = new Promise<void>((resolve) => {
+        setDialogState({
+          show: true,
+          content: <OpenFolderDialog onResolve={resolve} />,
+        });
+      });
+      // wait for the promise to resolve
+      await newPromise;
+      // set the dialog state to false and the dialog content to an empty fragment after promise resolved
+      setDialogState({ show: false, content: <></> });
       // open the folder and get the maps and variants data through the ipcRenderer bridge
       const folderData: { maps: string[]; types: string[] } | null =
         await window.ipcRenderer.openFolder();
@@ -210,8 +229,11 @@ const App = () => {
 
   return (
     <>
-      {/* top bar when frame is removed */}
-      <header id="titlebar" className="fixed top-0 flex flex-row w-full justify-between border-b-[1px] bg-white select-none">
+      {/* titlebar for frameless window, z-2000 guarantees to render above everything */}
+      <header
+        id="titlebar"
+        className="z-[2000] fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] bg-white select-none"
+      >
         <h1 className="fixed top-[0.375rem] left-1/2 -translate-x-1/2 text-xl font-bold">
           ElDewrito Resurgence 0.7 JSON Builder
         </h1>
@@ -230,20 +252,31 @@ const App = () => {
           </button>
         </div>
         <div>
-          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl" onClick={window.ipcRenderer.openHelp}>
+          <button
+            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            onClick={window.ipcRenderer.openHelp}
+          >
             <HelpOutline />
           </button>
-          <button className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl" onClick={window.ipcRenderer.minimizeWindow}>
+          <button
+            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            onClick={window.ipcRenderer.minimizeWindow}
+          >
             <MinimizeOutlined />
           </button>
-          <button className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl" onClick={window.ipcRenderer.closeWindow}>
+          <button
+            className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl"
+            onClick={window.ipcRenderer.closeWindow}
+          >
             <CloseOutlined />
           </button>
         </div>
       </header>
       <Sidebar mapsVariantsData={mapsVariantsData} />
-      <main className="flex flex-col my-16 px-8">
-        <ol className="flex flex-col mb-6 gap-12">
+      <main className="flex flex-col mb-16 px-8 dark:text-red-800">
+        {/* dialog component render inside main content for accessibility */}
+        {dialogState.show && <DialogFoundation child={dialogState.content} />}
+        <ol className="flex flex-col mt-16 mb-6 gap-12">
           {typeForms.map((typeNum, _index) => (
             <TypeForm
               key={typeNum}
