@@ -7,7 +7,7 @@ interface DialogFoundationProps {
  *
  * @component
  * @param {Object} props - The component props.
- * @param {React.ReactNode} props.child - The child component to render inside the dialog.
+ * @param {React.ReactElement} props.child - The child component to render inside the dialog.
  * @returns {JSX.Element} The rendered dialog foundation component.
  */
 export const DialogFoundation = ({ child }: DialogFoundationProps) => {
