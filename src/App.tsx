@@ -4,6 +4,7 @@ import {
   Sidebar,
   TypeForm,
   DialogFoundation,
+  SaveFilesDialog,
 } from "./components";
 import { MapObj, MapsVariantsData, TypeObj } from "./interfaces";
 import {
@@ -93,6 +94,9 @@ const App = () => {
   /**
    * Handler function for saving JSON files.
    * Handles the frontend operation of the functions defined in the main process and preload context bridges.
+   * Creates a new blocking promise and sets the dialog state with the SaveFilesDialog component.
+   * The SaveFilesDialog component resolves the promise when the user performs an action firing the promise resolve.
+   * The dialog state is then set to false and the dialog content is set to an empty fragment.
    * The function passes an array of files to the main process.
    * The main process then saves the JSON files to the selected directory.
    * If an error occurs, set the toast state with the error message.
@@ -101,6 +105,17 @@ const App = () => {
    * @returns {Promise<void>} - Returns a promise that is void on resolve.
    */
   const handleSave = async (): Promise<void> => {
+    // create a new blocking promise and set the dialog state with the SaveFilesDialog component
+    const newPromise = new Promise<void>((resolve) => {
+      setDialogState({
+        show: true,
+        content: <SaveFilesDialog onResolve={resolve} />,
+      });
+    });
+    // wait for the promise to resolve
+    await newPromise;
+    // set the dialog state to false and the dialog content to an empty fragment after promise resolved
+    setDialogState({ show: false, content: <></> });
     // initialize a new object to store the mods json data with dynamic key names and nested object package_url values
     const modsJson: { [key: string]: { package_url: string } } = {};
     // clone the types array and remove unused or unnecessary property from each type object
