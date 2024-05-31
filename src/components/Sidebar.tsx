@@ -20,7 +20,7 @@ export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
     <aside
       className={`fixed top-9 ${
         sidebarOpen ? "right-0" : "-right-64"
-      } h-[calc(100vh-2.25rem)] w-64 p-2 bg-[#004CB4]/50`}
+      } h-[calc(100vh-2.25rem)] w-64 bg-gradient-to-b from-[#0d254ad9] to-[#061023d9] z-30`}
     >
       <button
         // due to nature of tailwind and component libraries an arbitrary value is used to target the svg element
@@ -34,10 +34,11 @@ export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
         className={`fixed top-[49%] w-10 ${
           sidebarOpen
             ? "right-[16.2rem] [&_svg>path]:origin-[40%_50%]"
-            : "right-0 [&_svg>path]:origin-[0%_50%]"
-        } [&_svg]:h-14 [&_svg>path]:scale-[1.75]`}
+            : "-right-1 [&_svg>path]:origin-[0%_50%]"
+        } [&_svg]:h-14 [&_svg>path]:scale-[1.75] text-[#5d616cea] hover:text-[#963E15] active:text-[#53220C]`}
         aria-label={`${sidebarOpen ? "Close" : "Open"} sidebar`}
         title={`${sidebarOpen ? "Close" : "Open"} sidebar`}
+        draggable="false"
         // toggle sidebarOpen state to open and close the sidebar
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
@@ -48,7 +49,7 @@ export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
         )}
       </button>
       <div
-        className={`${!sidebarOpen && "hidden"} flex flex-col gap-y-2 h-full`}
+        className={`${!sidebarOpen && "hidden"} flex flex-col gap-y-2 h-full p-2 backdrop-blur-sm`}
       >
         <article className="flex flex-col grow h-[calc(50%-0.5rem)]">
           <h3 className="text-xl font-bold">GAMETYPES</h3>
