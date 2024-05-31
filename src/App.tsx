@@ -13,6 +13,7 @@ import {
   HelpOutline,
   MinimizeOutlined,
 } from "@mui/icons-material";
+import { forgeBackground } from "./assets";
 
 interface JsonData {
   maps: MapObj[];
@@ -244,10 +245,17 @@ const App = () => {
 
   return (
     <>
+      <video
+        autoPlay
+        loop
+        className="fixed h-screen w-screen object-cover -z-50"
+      >
+        <source src={forgeBackground} type="video/webm" />
+      </video>
       {/* titlebar for frameless window, z-2000 guarantees to render above everything */}
       <header
         id="titlebar"
-        className="z-[2000] fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] bg-white select-none"
+        className="fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] border-[#aac0da] backdrop-blur-lg bg-[#0a0e14a4] text-[#aac0da] select-none z-[2000]"
       >
         <h1 className="fixed top-[0.375rem] left-1/2 -translate-x-1/2 text-xl font-bold">
           ElDewrito Resurgence 0.7 JSON Builder
@@ -255,12 +263,14 @@ const App = () => {
         <div>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            draggable="false"
             onClick={handleFolder}
           >
             Open Folder
           </button>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            draggable="false"
             onClick={handleSave}
           >
             Save JSON
@@ -268,19 +278,22 @@ const App = () => {
         </div>
         <div>
           <button
-            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl hover:text-white active:text-white"
+            draggable="false"
             onClick={window.ipcRenderer.openHelp}
           >
             <HelpOutline />
           </button>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            draggable="false"
             onClick={window.ipcRenderer.minimizeWindow}
           >
             <MinimizeOutlined />
           </button>
           <button
-            className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl"
+            className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl active:text-black"
+            draggable="false"
             onClick={window.ipcRenderer.closeWindow}
           >
             <CloseOutlined />
@@ -288,7 +301,7 @@ const App = () => {
         </div>
       </header>
       <Sidebar mapsVariantsData={mapsVariantsData} />
-      <main className="flex flex-col mb-16 px-8 dark:text-red-800">
+      <main className="flex flex-col mb-16 px-8 text-[#aac0da] select-none">
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && <DialogFoundation child={dialogState.content} />}
         <ol className="flex flex-col mt-16 mb-6 gap-12">
@@ -302,7 +315,8 @@ const App = () => {
           ))}
         </ol>
         <button
-          className="flex flex-row py-1 justify-center items-center"
+          className="flex flex-row py-1 justify-center items-center hover:bg-[#963E15] active:bg-[#53220C] text-xl hover:text-white active:text-white"
+          draggable="false"
           onClick={createNewType}
         >
           <Add fontSize="large" />
