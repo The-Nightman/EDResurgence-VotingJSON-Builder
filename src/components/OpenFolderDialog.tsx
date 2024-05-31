@@ -31,11 +31,11 @@ export const OpenFolderDialog = ({ onResolve }: OpenDialogProps) => {
         You should select either the{" "}
         <strong className="font-normal underline">data</strong> folder inside
         your ElDewrito 0.7 install located at{" "}
-        <code className="bg-gray-700 text-white">..\..\ElDewrito\data</code>{" "}
+        <code className="bg-gray-700 text-white text-base">..\..\ElDewrito\data</code>{" "}
         <strong className="font-normal">OR</strong> a folder that matches the
         following filepath structure containing the folders{" "}
-        <code className="bg-gray-700 text-white">map_variants</code> and{" "}
-        <code className="bg-gray-700 text-white">game_variants</code>.
+        <code className="bg-gray-700 text-white text-base">map_variants</code> and{" "}
+        <code className="bg-gray-700 text-white text-base">game_variants</code>.
       </p>
       {/* filepath codeblock, DO NOT CHANGE INDEXING */}
       <pre className="mb-4 p-3 rounded-md border border-slate-400 bg-gray-700 text-white">
@@ -57,6 +57,8 @@ export const OpenFolderDialog = ({ onResolve }: OpenDialogProps) => {
       <div className="relative flex h-7 mt-auto">
         <button
           className="hover:animate-pulse flex-grow hover:bg-[#963E15] active:bg-[#53220C]"
+          title="Close Dialog"
+          aria-label="Close Dialog"
           onClick={handleClick}
         >
           <span className="sr-only">OK</span>
