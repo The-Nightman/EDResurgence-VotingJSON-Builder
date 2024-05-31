@@ -232,12 +232,13 @@ export const TypeForm = ({
     <li>
       <form
         onSubmit={handleSubmit}
-        className="[&_select]:text-black [&_input]:text-black [&_select]:bg-[#a3bbd8] [&_input]:bg-[#a3bbd8] [&_select]:font-sans [&_input]:font-sans [&_select]:rounded [&_input]:rounded"
+        className="p-1 bg-gradient-to-b from-[#004bb431] to-[#000f1821] [&_select]:text-black [&_input]:text-black [&_select]:bg-[#a3bbd8] [&_input]:bg-[#a3bbd8] [&_select]:font-sans [&_input]:font-sans [&_select]:rounded [&_input]:rounded"
       >
         <div className="flex flex-row flex-wrap justify-between">
           <div className="flex flex-row gap-2 justify-center">
             <button
               title={formState.formCollapsed ? "Expand Form" : "Collapse Form"}
+              draggable="false"
               aria-label={
                 formState.formCollapsed ? "Expand Form" : "Collapse Form"
               }
@@ -249,7 +250,7 @@ export const TypeForm = ({
               // this equates to .element > p in raw css
               // [&_svg] svg element of the icon that is child to the button
               // [&_svg>path] path child of the svg element
-              className="h-6 px-2 [&_svg]:w-fit [&_svg>path]:scale-[2] [&_svg>path]:origin-center"
+              className="h-6 px-2 [&_svg]:w-fit [&_svg>path]:scale-[2] [&_svg>path]:origin-center hover:text-[#963E15] active:text-[#53220C]"
               // type="button" to prevent form submission behaviour
               type="button"
               onClick={() =>
@@ -277,7 +278,8 @@ export const TypeForm = ({
               title="Delete Type"
               aria-label="Delete Type"
               aria-description="Remove the Game Type from the JSON data"
-              className="h-8 w-10 text-2xl"
+              draggable="false"
+              className="h-8 w-10 text-2xl hover:text-[#963E15] active:text-[#53220C]"
               // type="button" to prevent form submission behaviour
               type="button"
               // onClick event to handle the deletion of the type
@@ -291,7 +293,8 @@ export const TypeForm = ({
               title="Save/Update Type"
               aria-label="Save or Update Type"
               aria-description="Save or Update Game Types to be written to the JSON"
-              className="h-8 w-12 text-2xl"
+              draggable="false"
+              className="h-8 w-12 text-2xl hover:text-lime-400 active:text-lime-800"
               // uses form submission behaviour to call the form onSubmit event
               type="submit"
             >
@@ -849,7 +852,9 @@ export const TypeForm = ({
                   Vanilla Maps
                 </span>
                 <button
+                  className="hover:text-[#963E15] active:text-[#53220C]"
                   type="button"
+                  draggable="false"
                   title={
                     formState.vanillaMapsCollapsed
                       ? "Open Vanilla Maps"
@@ -935,7 +940,9 @@ export const TypeForm = ({
                     Mod Base Maps
                   </span>
                   <button
+                    className="hover:text-[#963E15] active:text-[#53220C]"
                     type="button"
+                    draggable="false"
                     title={
                       formState.modMapsCollapsed
                         ? "Open Mod Base Maps"
