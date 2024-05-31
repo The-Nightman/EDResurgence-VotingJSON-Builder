@@ -300,7 +300,6 @@ const App = () => {
           </button>
         </div>
       </header>
-      <Sidebar mapsVariantsData={mapsVariantsData} />
       <main className="flex flex-col mb-16 px-8 text-[#aac0da] select-none">
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && <DialogFoundation child={dialogState.content} />}
@@ -322,6 +321,7 @@ const App = () => {
           <Add fontSize="large" />
           <span className="text-2xl">add type</span>
         </button>
+        <Sidebar mapsVariantsData={mapsVariantsData} />
       </main>
     </>
   );
