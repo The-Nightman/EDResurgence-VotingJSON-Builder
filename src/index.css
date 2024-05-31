@@ -7,7 +7,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./assets/ConduitITCRegular.otf') format('opentype');
+  src: url('./assets/Conduit-ITC.woff') format('woff');
 }
 
 body {

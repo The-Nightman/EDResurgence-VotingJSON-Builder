@@ -207,7 +207,7 @@ export const TypeForm = ({
    */
   const handleModPackChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-    // if the value changes to a new mod pack or an empty string, AND operation to check for 
+    // if the value changes to a new mod pack or an empty string, AND operation to check for
     // both conditions to prevent any possible breaking edge cases when going from no mod to mod
     if ((value !== selectedMod.modName && value !== "") || value === "") {
       const filteredMaps = typeFormData.specificMaps.filter(
@@ -230,11 +230,15 @@ export const TypeForm = ({
 
   return (
     <li>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="p-1 bg-gradient-to-b from-[#004bb431] to-[#000f1821] [&_select]:text-black [&_input]:text-black [&_select]:bg-[#a3bbd8] [&_input]:bg-[#a3bbd8] [&_select]:font-sans [&_input]:font-sans [&_select]:rounded [&_input]:rounded"
+      >
         <div className="flex flex-row flex-wrap justify-between">
           <div className="flex flex-row gap-2 justify-center">
             <button
               title={formState.formCollapsed ? "Expand Form" : "Collapse Form"}
+              draggable="false"
               aria-label={
                 formState.formCollapsed ? "Expand Form" : "Collapse Form"
               }
@@ -246,7 +250,7 @@ export const TypeForm = ({
               // this equates to .element > p in raw css
               // [&_svg] svg element of the icon that is child to the button
               // [&_svg>path] path child of the svg element
-              className="h-6 px-2 [&_svg]:w-fit [&_svg>path]:scale-[2] [&_svg>path]:origin-center"
+              className="h-6 px-2 [&_svg]:w-fit [&_svg>path]:scale-[2] [&_svg>path]:origin-center hover:text-[#963E15] active:text-[#53220C]"
               // type="button" to prevent form submission behaviour
               type="button"
               onClick={() =>
@@ -274,7 +278,8 @@ export const TypeForm = ({
               title="Delete Type"
               aria-label="Delete Type"
               aria-description="Remove the Game Type from the JSON data"
-              className="h-8 w-10 text-2xl"
+              draggable="false"
+              className="h-8 w-10 text-2xl hover:text-[#963E15] active:text-[#53220C]"
               // type="button" to prevent form submission behaviour
               type="button"
               // onClick event to handle the deletion of the type
@@ -288,7 +293,8 @@ export const TypeForm = ({
               title="Save/Update Type"
               aria-label="Save or Update Type"
               aria-description="Save or Update Game Types to be written to the JSON"
-              className="h-8 w-12 text-2xl"
+              draggable="false"
+              className="h-8 w-12 text-2xl hover:text-lime-400 active:text-lime-800"
               // uses form submission behaviour to call the form onSubmit event
               type="submit"
             >
@@ -299,7 +305,7 @@ export const TypeForm = ({
         {/* Main form content */}
         <div className={`${formState.formCollapsed && "hidden"}`}>
           {/* Variant Settings */}
-          <fieldset className="flex flex-row flex-wrap gap-4 justify-between px-2 border-2 border-slate-900">
+          <fieldset className="flex flex-row flex-wrap gap-4 justify-between px-2">
             <legend>Variant Settings</legend>
             <span className="sr-only">
               Select the Variant, Modpack and chance of appearing as a voting
@@ -309,7 +315,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-48">
                 Variant Select
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Variant select"
                   aria-description="Select a Game Variant to play"
                   id="typeName"
@@ -338,7 +343,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-48">
                 Modpack Select
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Modpack select"
                   aria-description="Select a Modpack to play with the Variant"
                   id="modPack"
@@ -362,7 +366,7 @@ export const TypeForm = ({
                 Random Chance Weight
                 <input
                   type="number"
-                  className="font-sans pl-1 rounded bg-[#a3bbd8]"
+                  className="pl-1"
                   name="Random Chance Weight"
                   aria-description="Set the Random Chance Weight for the Variant ranging from 0.1 (default) to 100. 
                   Can be set to a custom value above 100 by typing or manually in the voting.json file"
@@ -382,7 +386,7 @@ export const TypeForm = ({
             </Tooltip>
           </fieldset>
           {/* Server Override command options */}
-          <fieldset className="flex flex-row flex-wrap gap-4 px-2 border-2 border-slate-900">
+          <fieldset className="flex flex-row flex-wrap gap-4 px-2">
             <legend>Server Overrides</legend>
             <span className="sr-only">
               Select the Server commands to use when the game starts
@@ -391,7 +395,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Sprint
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Sprint"
                   aria-description="Set the Sprint option for the Server"
                   id="Server.Sprint"
@@ -409,7 +412,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Unlimited Sprint
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Unlimited Sprint"
                   aria-description="Set the Unlimited Sprint option for the Server"
                   id="Server.UnlimitedSprint"
@@ -426,7 +428,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Assassinations
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Assassinations"
                   aria-description="Set the Assassinations option for the Server"
                   id="Server.AssassinationEnabled"
@@ -443,7 +444,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Team Count
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Number Of Teams"
                   aria-description="Set the Number of Teams for the Server"
                   id="Server.NumberOfTeams"
@@ -467,7 +467,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Team Size
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Team Size"
                   aria-description="Set the Team Size for the Server, this is the number of players 
                   assigned to a team before being assigned to the next team in the list. This is 
@@ -491,7 +490,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Podium
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Podium"
                   aria-description="Set the Podium option for the Server"
                   id="Server.PodiumEnabled"
@@ -508,7 +506,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Emotes
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Emotes"
                   aria-description="Set the Emotes option for the Server"
                   id="Server.EmotesEnabled"
@@ -525,7 +522,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Podium Emotes
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Podium Emotes"
                   aria-description="Set the Podium Emotes option for the Server"
                   id="Server.EmotesDuringPodiumEnabled"
@@ -542,7 +538,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Kill Command
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Kill Command"
                   aria-description="Set the Kill Command option for the Server"
                   id="Server.KillCommandEnabled"
@@ -559,7 +554,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Podium Kill Command
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Kill Command During Podium"
                   aria-description="Set the Kill Command During Podium option for the Server"
                   id="Server.KillCommandDuringPodiumEnabled"
@@ -576,7 +570,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Near Victory Music
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Near Victory Music"
                   aria-description="Set the Near Victory Music option for the Server"
                   id="Server.NearVictoryMusicEnabled"
@@ -593,7 +586,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Post Match Music
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Post Match Music"
                   aria-description="Set the Post Match Music option for the Server"
                   id="Server.PostMatchMusicEnabled"
@@ -608,7 +600,7 @@ export const TypeForm = ({
             </Tooltip>
           </fieldset>
           {/* End of MatchServer Override command options */}
-          <fieldset className="flex flex-row flex-wrap gap-4 px-2 border-2 border-slate-900">
+          <fieldset className="flex flex-row flex-wrap gap-4 px-2">
             <legend>End of Match Server Overrides</legend>
             <span className="sr-only">
               Select the Server commands to use when the game ends, usually used
@@ -618,7 +610,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Sprint
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Sprint"
                   aria-description="Set the Sprint option for the Server after the match ends"
                   id="Server.Sprint"
@@ -638,7 +629,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Unlimited Sprint
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Unlimited Sprint"
                   aria-description="Set the Unlimited Sprint option for the Server after the match ends"
                   id="Server.UnlimitedSprint"
@@ -657,7 +647,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Assassinations
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Assassinations"
                   aria-description="Set the Assassinations option for the Server after the match ends"
                   id="Server.AssassinationEnabled"
@@ -676,7 +665,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Team Count
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Number Of Teams"
                   aria-description="Set the Number of Teams for the Server after the match ends"
                   id="Server.NumberOfTeams"
@@ -702,7 +690,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Team Size
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Team Size"
                   aria-description="Set the Team Size for the Server after the match ends, this is the 
                   number of players assigned to a team before being assigned to the next team in the list. 
@@ -728,7 +715,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Podium
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Podium"
                   aria-description="Set the Podium option for the Server after the match ends"
                   id="Server.PodiumEnabled"
@@ -747,7 +733,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Emotes
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Emotes"
                   aria-description="Set the Emotes option for the Server after the match ends"
                   id="Server.EmotesEnabled"
@@ -766,7 +751,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Podium Emotes
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Podium Emotes"
                   aria-description="Set the Podium Emotes option for the Server after the match ends"
                   id="Server.EmotesDuringPodiumEnabled"
@@ -785,7 +769,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Kill Command
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Kill Command"
                   aria-description="Set the Kill Command option for the Server after the match ends"
                   id="Server.KillCommandEnabled"
@@ -804,7 +787,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Podium Kill Command
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Kill Command During Podium"
                   aria-description="Set the Kill Command During Podium option for the Server after the match ends"
                   id="Server.KillCommandDuringPodiumEnabled"
@@ -823,7 +805,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Near Victory Music
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Near Victory Music"
                   aria-description="Set the Near Victory Music option for the Server after the match ends"
                   id="Server.NearVictoryMusicEnabled"
@@ -842,7 +823,6 @@ export const TypeForm = ({
               <label className="flex flex-col min-w-24">
                 Post Match Music
                 <select
-                  className="font-sans rounded bg-[#a3bbd8]"
                   name="Post Match Music"
                   aria-description="Set the Post Match Music option for the Server after the match ends"
                   id="Server.PostMatchMusicEnabled"
@@ -859,20 +839,22 @@ export const TypeForm = ({
             </Tooltip>
           </fieldset>
           {/* Maps select */}
-          <fieldset className="flex flex-col gap-4 border-2 border-slate-900">
+          <fieldset className="flex flex-col mt-4 gap-4">
             <legend>Maps</legend>
             <span className="sr-only">
               Select the Maps to play with the Variant
             </span>
             {/* Vanilla Base-Game Maps */}
-            <fieldset className="flex flex-col border-2 border-slate-900">
+            <fieldset className="flex flex-col">
               <legend className="sr-only">Vanilla Maps</legend>
               <div className="flex flex-row justify-between">
                 <span className="self-center text-lg" aria-hidden>
                   Vanilla Maps
                 </span>
                 <button
+                  className="hover:text-[#963E15] active:text-[#53220C]"
                   type="button"
+                  draggable="false"
                   title={
                     formState.vanillaMapsCollapsed
                       ? "Open Vanilla Maps"
@@ -951,14 +933,16 @@ export const TypeForm = ({
             </fieldset>
             {/* Mod Base Maps */}
             {selectedMod.modMaps.length > 0 && (
-              <fieldset className="flex flex-col border-2 border-slate-900">
+              <fieldset className="flex flex-col">
                 <legend className="sr-only">Mod Base Maps</legend>
                 <div className="flex flex-row justify-between">
                   <span className="self-center text-lg" aria-hidden>
                     Mod Base Maps
                   </span>
                   <button
+                    className="hover:text-[#963E15] active:text-[#53220C]"
                     type="button"
+                    draggable="false"
                     title={
                       formState.modMapsCollapsed
                         ? "Open Mod Base Maps"
@@ -1037,7 +1021,7 @@ export const TypeForm = ({
               </fieldset>
             )}
             {/* Custom Maps */}
-            <fieldset className="flex flex-row flex-wrap gap-4 px-2 border-2 border-slate-900">
+            <fieldset className="flex flex-row flex-wrap gap-4 px-2">
               <legend className="text-lg -ml-[0.375rem]">Your Maps</legend>
               {mapsVariantsData.maps.map((map) => (
                 <label className="w-32" key={map}>
