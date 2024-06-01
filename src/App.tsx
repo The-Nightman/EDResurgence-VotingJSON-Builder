@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useContext, useState } from "react";
 import {
   OpenFolderDialog,
   Sidebar,
   TypeForm,
   DialogFoundation,
   SaveFilesDialog,
+  SettingsDialog,
 } from "./components";
 import { MapObj, MapsVariantsData, TypeObj } from "./interfaces";
 import {
@@ -12,8 +13,10 @@ import {
   CloseOutlined,
   HelpOutline,
   MinimizeOutlined,
+  Settings,
 } from "@mui/icons-material";
 import { forgeBackground } from "./assets";
+import { SettingsContext } from "./contexts/SettingsContext";
 
 interface JsonData {
   maps: MapObj[];
@@ -45,6 +48,11 @@ const App = () => {
     variants: [],
   });
   const [typeForms, setTypeForms] = useState<number[]>([]);
+  const { settings } = useContext(SettingsContext);
+
+  const backgroundData: { [key: string]: string } = {
+    forgeBackground: forgeBackground,
+  };
 
   /**
    * Handler function for opening a folder and setting the maps and variants data.
@@ -181,6 +189,28 @@ const App = () => {
   };
 
   /**
+   * Handles the action of opening the settings dialog.
+   * Creates a new blocking promise and sets the dialog state with the SettingsDialog component.
+   * The SettingsDialog component resolves the promise when the user performs an action firing the promise resolve.
+   * The dialog state is then set to false and the dialog content is set to an empty fragment.
+   *
+   * @returns {Promise<void>} A promise that resolves when the settings dialog is closed.
+   */
+  const handleOpenSettings = async () => {
+    // create a new blocking promise and set the dialog state with the SettingsDialog component
+    const newPromise = new Promise<void>((resolve) => {
+      setDialogState({
+        show: true,
+        content: <SettingsDialog onResolve={resolve} />,
+      });
+    });
+    // wait for the promise to resolve
+    await newPromise;
+    // set the dialog state to false and the dialog content to an empty fragment after promise resolved
+    setDialogState({ show: false, content: <></> });
+  };
+
+  /**
    * Creates a new type form.
    * Adds a new element to the typeForms state rendering a new form.
    * Generates unique element data by means of a millisecond timestamp.
@@ -250,12 +280,12 @@ const App = () => {
         loop
         className="fixed h-screen w-screen object-cover -z-50"
       >
-        <source src={forgeBackground} type="video/webm" />
+        <source src={backgroundData[settings.background]} type="video/webm" />
       </video>
       {/* titlebar for frameless window, z-2000 guarantees to render above everything */}
       <header
         id="titlebar"
-        className="fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] border-[#aac0da] backdrop-blur-lg bg-[#0a0e14a4] text-[#aac0da] select-none z-[2000]"
+        className="fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] border-[#aac0da] backdrop-blur-lg bg-[#0a0e14a4] text-[#aac0da] dark:text-white select-none z-[2000]"
       >
         <h1 className="fixed top-[0.375rem] left-1/2 -translate-x-1/2 text-xl font-bold">
           ElDewrito Resurgence 0.7 JSON Builder
@@ -277,6 +307,13 @@ const App = () => {
           </button>
         </div>
         <div>
+          <button
+            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl text-white"
+            draggable="false"
+            onClick={handleOpenSettings}
+          >
+            <Settings />
+          </button>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl hover:text-white active:text-white"
             draggable="false"
@@ -300,7 +337,7 @@ const App = () => {
           </button>
         </div>
       </header>
-      <main className="flex flex-col mb-16 px-8 text-[#aac0da] select-none">
+      <main className="flex flex-col mb-16 px-8 text-[#aac0da] dark:text-white select-none">
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && <DialogFoundation child={dialogState.content} />}
         <ol className="flex flex-col mt-16 mb-6 gap-12">
