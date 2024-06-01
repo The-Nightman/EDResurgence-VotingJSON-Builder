@@ -35,7 +35,7 @@ export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
           sidebarOpen
             ? "right-[16.2rem] [&_svg>path]:origin-[40%_50%]"
             : "-right-1 [&_svg>path]:origin-[0%_50%]"
-        } [&_svg]:h-14 [&_svg>path]:scale-[1.75] text-[#5d616cea] hover:text-[#963E15] active:text-[#53220C]`}
+        } [&_svg]:h-14 [&_svg>path]:scale-[1.75] text-[#5d616cea] dark:text-white hover:text-[#963E15] active:text-[#53220C]`}
         aria-label={`${sidebarOpen ? "Close" : "Open"} sidebar`}
         title={`${sidebarOpen ? "Close" : "Open"} sidebar`}
         draggable="false"
