@@ -6,6 +6,7 @@ import {
   DialogFoundation,
   SaveFilesDialog,
   SettingsDialog,
+  OpenSavedJsonDialog,
 } from "./components";
 import { MapObj, MapsVariantsData, TypeObj } from "./interfaces";
 import {
@@ -48,6 +49,7 @@ const App = () => {
     variants: [],
   });
   const [typeForms, setTypeForms] = useState<number[]>([]);
+  const [openDropDown, setOpenDropDown] = useState<boolean>(false);
   const { settings } = useContext(SettingsContext);
 
   const backgroundData: { [key: string]: string } = {
@@ -188,6 +190,20 @@ const App = () => {
     }
   };
 
+  const handleOpenSavedJson = async () => {
+    // create a new blocking promise and set the dialog state with the SettingsDialog component
+    const newPromise = new Promise<void>((resolve) => {
+      setDialogState({
+        show: true,
+        content: <OpenSavedJsonDialog onResolve={resolve} />,
+      });
+    });
+    // wait for the promise to resolve
+    await newPromise;
+    // set the dialog state to false and the dialog content to an empty fragment after promise resolved
+    setDialogState({ show: false, content: <></> });
+  };
+
   /**
    * Handles the action of opening the settings dialog.
    * Creates a new blocking promise and sets the dialog state with the SettingsDialog component.
@@ -290,14 +306,37 @@ const App = () => {
         <h1 className="fixed top-[0.375rem] left-1/2 -translate-x-1/2 text-xl font-bold">
           ElDewrito Resurgence 0.7 JSON Builder
         </h1>
-        <div>
-          <button
-            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
-            draggable="false"
-            onClick={handleFolder}
+        <div className="flex flex-row">
+          <div
+            className="flex flex-col w-[6.5rem]"
+            onMouseLeave={() => setOpenDropDown(false)}
           >
-            Open Folder
-          </button>
+            <button
+              className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+              draggable="false"
+              onClick={() => setOpenDropDown(true)}
+            >
+              Open...
+            </button>
+            {openDropDown && (
+              <>
+                <button
+                  className="py-1 px-2 bg-[#0a0e14a4] hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+                  draggable="false"
+                  onClick={handleOpenSavedJson}
+                >
+                  Open Saved
+                </button>
+                <button
+                  className="py-1 px-2 bg-[#0a0e14a4] hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+                  draggable="false"
+                  onClick={handleFolder}
+                >
+                  Open Folder
+                </button>
+              </>
+            )}
+          </div>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
             draggable="false"
