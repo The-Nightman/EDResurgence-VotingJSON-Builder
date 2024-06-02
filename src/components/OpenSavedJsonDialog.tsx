@@ -73,7 +73,7 @@ export const OpenSavedJsonDialog = ({
     <div
       role="alertdialog"
       aria-label="Save Files Dialog"
-      className="flex flex-col h-full min-w-[60%] w-min my-4 mx-auto"
+      className="flex flex-col h-screen min-w-[60%] w-min my-4 mx-auto"
     >
       <h2 className="text-5xl">OPEN SAVED JSON</h2>
       <div className="mt-4">
@@ -81,29 +81,42 @@ export const OpenSavedJsonDialog = ({
           Loading a JSON will save any changes made, please cancel before
           loading a json to undo deletions.
         </strong>
-        <ol className="bg-gray-500 text-white w-full min-h-8 rounded-md">
-          {jsonFiles.map((jsonFile, index) => (
-            <li
-              className={`relative flex flex-row h-8 ${
-                index > 0 && "border-t"
-              } border-gray-200`}
-              key={jsonFile.date}
-            >
-              <button
-                className="h-8 w-8 rounded-l-md hover:bg-lime-600 active:bg-lime-800"
-                onClick={() => handleLoadJson(jsonFile)}
+        <ol className="min-h-8 w-full mb-6 rounded-md bg-gray-500 text-white">
+          {jsonFiles.map((jsonFile, index) => {
+            let rounded: { open: string; delete: string } = {
+              open: "",
+              delete: "",
+            };
+            if (index === 0 && jsonFiles.length === 1) {
+              rounded = { open: "rounded-l-md", delete: "rounded-r-md" };
+            } else if (index === 0 && jsonFiles.length > 1) {
+              rounded = { open: "rounded-tl-md", delete: "rounded-tr-md" };
+            } else if (index === jsonFiles.length - 1) {
+              rounded = { open: "rounded-bl-md", delete: "rounded-br-md" };
+            }
+            return (
+              <li
+                className={`relative flex flex-row h-8 ${
+                  index > 0 && "border-t"
+                } border-gray-200`}
+                key={jsonFile.date}
               >
-                <OpenInBrowser />
-              </button>
-              <p className="p-2">{jsonFile.name}</p>
-              <button
-                className="absolute top-0 right-0 h-8 w-8 rounded-r-md hover:bg-red-600 active:bg-red-400"
-                onClick={() => handleOptimisticDelete(jsonFile)}
-              >
-                <Close />
-              </button>
-            </li>
-          ))}
+                <button
+                  className={`h-8 w-8 ${rounded.open} hover:bg-lime-600 active:bg-lime-800`}
+                  onClick={() => handleLoadJson(jsonFile)}
+                >
+                  <OpenInBrowser />
+                </button>
+                <p className="p-2">{jsonFile.name}</p>
+                <button
+                  className={`absolute top-0 right-0 h-8 w-8 ${rounded.delete} hover:bg-red-600 active:bg-red-400`}
+                  onClick={() => handleOptimisticDelete(jsonFile)}
+                >
+                  <Close />
+                </button>
+              </li>
+            );
+          })}
           {jsonFiles.length === 0 && (
             <li className="p-2">No saved json files found.</li>
           )}
