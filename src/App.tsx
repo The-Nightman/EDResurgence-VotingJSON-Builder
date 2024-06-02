@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   OpenFolderDialog,
   Sidebar,
@@ -18,6 +18,7 @@ import {
 } from "@mui/icons-material";
 import { forgeBackground } from "./assets";
 import { SettingsContext } from "./contexts/SettingsContext";
+import { Tooltip } from "@mui/material";
 
 interface JsonData {
   maps: MapObj[];
@@ -55,9 +56,41 @@ const App = () => {
   const [typeForms, setTypeForms] = useState<number[]>([]);
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
   const { settings } = useContext(SettingsContext);
+  const mapOptionsRef = useRef<HTMLSelectElement>(null);
 
   const backgroundData: { [key: string]: string } = {
     forgeBackground: forgeBackground,
+  };
+
+  // map options object with error maps, vanilla maps and chosen maps
+  // chosen maps is used to reduce business logic in save function and to allow
+  // for dynamic map selection from types objects in types array of jsonData state
+  const mapOptions: {
+    errorMaps: MapObj[];
+    vanillaMaps: MapObj[];
+    chosenMaps: null;
+  } = {
+    errorMaps: [
+      { displayName: "INVALID MAP", mapName: "deadlock" },
+      { displayName: "INVALID MAP", mapName: "deadlock" },
+      { displayName: "INVALID MAP", mapName: "deadlock" },
+      { displayName: "INVALID MAP", mapName: "deadlock" },
+    ],
+    vanillaMaps: [
+      { displayName: "Diamondback", mapName: "s3d_avalanche" },
+      { displayName: "Edge", mapName: "s3d_edge" },
+      { displayName: "Guardian", mapName: "guardian" },
+      { displayName: "High Ground", mapName: "deadlock" },
+      { displayName: "Icebox", mapName: "s3d_turf" },
+      { displayName: "Last Resort", mapName: "zanzibar" },
+      { displayName: "Narrows", mapName: "chill" },
+      { displayName: "Reactor", mapName: "s3d_reactor" },
+      { displayName: "Sandtrap", mapName: "shrine" },
+      { displayName: "Standoff", mapName: "bunkerworld" },
+      { displayName: "The Pit", mapName: "cyberdyne" },
+      { displayName: "Valhalla", mapName: "riverworld" },
+    ],
+    chosenMaps: null,
   };
 
   // use this to clear the open saved json details when the types array is empty
@@ -170,13 +203,46 @@ const App = () => {
       // e.g. this will create { "modPackName": { package_url: "" } }
       modsJson[mod] = { package_url: "" };
     });
+    // use the mapOptionsRef to get the value of the map options select element
+    // this will determine the maps array to be saved in the JSON file
+    const mapOptionsValue = mapOptionsRef.current!.value;
+    const mapsArr: MapObj[] = [];
+    if (mapOptionsValue === "chosenMaps") {
+      const collectedMaps: MapObj[] = [];
+      jsonData.types.forEach((type) => {
+        return collectedMaps.push(...type.specificMaps);
+      });
+      const uniqueMaps = collectedMaps.reduce(
+        (unique: MapObj[], map: MapObj) => {
+          if (
+            !unique.some(
+              (obj) =>
+                obj.mapName === map.mapName &&
+                obj.displayName === map.displayName
+            )
+          ) {
+            unique.push(map);
+          }
+          return unique;
+        },
+        []
+      );
+      mapsArr.push(...uniqueMaps);
+    } else {
+      mapsArr.push(
+        ...(mapOptions[mapOptionsValue as keyof typeof mapOptions] || [])
+      );
+    }
     // create an array of files to be saved
     const files = [
       {
         filename: "voting.json",
         // stringify the jsonData object and prettify with 2 spaces for indentation
         data: JSON.stringify(
-          { maps: [...jsonData.maps], types: typesArr },
+          {
+            maps: mapsArr,
+            types: typesArr,
+          },
           null,
           2
         ),
@@ -370,9 +436,14 @@ const App = () => {
             )}
           </div>
           <button
-            className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            className={`py-1 px-2 ${
+              jsonData.types.length < 2
+                ? "bg-gray-500"
+                : "hover:bg-[#963E15] active:bg-[#53220C]"
+            } text-xl`}
             draggable="false"
             onClick={handleSave}
+            disabled={jsonData.types.length < 2}
           >
             Save JSON
           </button>
@@ -411,7 +482,45 @@ const App = () => {
       <main className="flex flex-col mb-16 px-8 text-[#aac0da] dark:text-white select-none">
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && <DialogFoundation child={dialogState.content} />}
-        <ol className="flex flex-col mt-16 mb-6 gap-12">
+        <div className="flex flex-row justify-between mt-16">
+          <Tooltip
+            title={`VANILLA MAPS: set the maps array with the vanilla maps, default option.
+          ERROR MAPS: in the event of invalid json the game will show the voting options 
+          on High Ground with the name "INVALID MAP".
+          CHOSEN MAPS: set the maps array with the maps selected in each game type.`}
+            arrow
+          >
+            <label className="flex flex-col min-w-48 text-xl">
+              Maps saving options:
+              <select
+                className="rounded bg-[#a3bbd8] text-lg text-black font-sans"
+                name="Map options selection"
+                aria-label="Map options selection"
+                aria-description={`VANILLA MAPS: set the maps array with the vanilla maps, default option.
+                ERROR MAPS: in the event of invalid json the game will show the voting options 
+                on High Ground with the name "INVALID MAP".
+                CHOSEN MAPS: set the maps array with the maps selected in each game type.`}
+                defaultValue={"vanillaMaps"}
+                ref={mapOptionsRef}
+              >
+                <option value="vanillaMaps">Vanilla Maps</option>
+                <option value="errorMaps">Error Maps</option>
+                <option value="chosenMaps">Chosen Maps</option>
+              </select>
+            </label>
+          </Tooltip>
+          <p className="text-xl">
+            Saved Types (minimum 2):{" "}
+            <span
+              className={`${
+                jsonData.types.length < 2 ? "text-red-600" : "text-lime-400"
+              }`}
+            >
+              {jsonData.types.length}/2
+            </span>
+          </p>
+        </div>
+        <ol className="flex flex-col my-6 gap-12">
           {typeForms.map((typeNum, index) => (
             <TypeForm
               key={typeNum}
