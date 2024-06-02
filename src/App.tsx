@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   OpenFolderDialog,
   Sidebar,
@@ -40,6 +40,10 @@ const App = () => {
     ],
     types: [],
   });
+  const [openSavedJsonDetails, setOpenSavedJsonDetails] = useState<{
+    name: string;
+    date: number;
+  } | null>(null);
   const [dialogState, setDialogState] = useState<DialogState>({
     show: false,
     content: <></>,
@@ -55,6 +59,13 @@ const App = () => {
   const backgroundData: { [key: string]: string } = {
     forgeBackground: forgeBackground,
   };
+
+  // use this to clear the open saved json details when the types array is empty
+  useEffect(() => {
+    if (jsonData.types.length === 0) {
+      setOpenSavedJsonDetails(null);
+    }
+  }, [jsonData.types]);
 
   /**
    * Handler function for opening a folder and setting the maps and variants data.
@@ -192,7 +203,12 @@ const App = () => {
 
   /**
    * Handles the action of opening a saved JSON file.
-   * 
+   * Creates a new blocking promise and sets the dialog state with the OpenSavedJsonDialog component.
+   * The OpenSavedJsonDialog component resolves the promise when the user performs an action firing the promise resolve.
+   * The dialog state is then set to false and the dialog content is set to an empty fragment.
+   * If the jsonData is not void, set the open saved json details with the name and date from the elevated json data.
+   * Set the type forms array with the ids from the types array.
+   *
    * @async
    * @returns {Promise<void | SavedJsonData>} A promise that resolves with void or a SavedJsonData object.
    */
@@ -209,6 +225,14 @@ const App = () => {
     const jsonData: SavedJsonData | void = await newPromise;
     // set the dialog state to false and the dialog content to an empty fragment after promise resolved
     setDialogState({ show: false, content: <></> });
+    if (jsonData) {
+      // set the open saved json details with the name and date from the elevated json data
+      setOpenSavedJsonDetails({ name: jsonData.name, date: jsonData.date });
+      // set the maps and types data from the elevated json data
+      setJsonData(jsonData.data);
+      // set the type forms array with the ids from the types array
+      setTypeForms(jsonData.data.types.map((type) => type.id!));
+    }
   };
 
   /**
@@ -388,12 +412,16 @@ const App = () => {
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && <DialogFoundation child={dialogState.content} />}
         <ol className="flex flex-col mt-16 mb-6 gap-12">
-          {typeForms.map((typeNum, _index) => (
+          {typeForms.map((typeNum, index) => (
             <TypeForm
               key={typeNum}
               mapsVariantsData={mapsVariantsData}
               uid={typeNum}
               handleSaveDelete={handleJsonData}
+              // if openSavedJsonDetails is not null, pass the saved type object data from its place in the array
+              {...(openSavedJsonDetails?.date && {
+                savedTypeForm: jsonData.types[index],
+              })}
             />
           ))}
         </ol>
