@@ -2,6 +2,8 @@ import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "fs/promises";
+import { initStores } from "./utils/initStores";
+import { SavedJsonData, UserConfig } from "./interfaces";
 
 // get the current directory when running the application
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -65,6 +67,9 @@ app.on("window-all-closed", () => {
     win = null;
   }
 });
+
+// Initialize the user configuration and saved JSON data stores
+const { userConfig, savedJsons } = initStores();
 
 app.on("activate", () => {
   // On OS X it's common to re-create a window in the app when the
@@ -242,4 +247,55 @@ app.whenReady().then(() => {
       "https://github.com/The-Nightman/EDResurgence-VotingJSON-Builder"
     );
   });
+
+  /**
+   * IPC event handler for 'electron-store-get-cfg'.
+   * This event is triggered when a request is made to get a configuration value from the userConfig store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {string} key - The key to retrieve the data for.
+   * @returns {UserConfig} - The configuration settings object.
+   */
+  ipcMain.handle("electron-store-get-cfg", (_event, key): UserConfig => {
+    return userConfig.get(key);
+  });
+
+  /**
+   * IPC event handler for 'electron-store-set-cfg'.
+   * This event is triggered when a request is made to set a configuration value in the userConfig store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {UserConfig} object - The configuration object to set.
+   * @returns {void} - Returns void.
+   */
+  ipcMain.handle(
+    "electron-store-set-cfg",
+    (_event, object: UserConfig): void => {
+      userConfig.set(object);
+    }
+  );
+
+  /**
+   * IPC event handler for 'electron-store-get-saved'.
+   * This event is triggered when a request is made to get a saved value from the savedJsons store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {string} key - The key to retrieve the data for.
+   * @returns {SavedJsonData[]} - An array of saved JSON data objects.
+   */
+  ipcMain.handle("electron-store-get-saved", (_event, key): SavedJsonData[] => {
+    return savedJsons.get(key);
+  });
+
+  /**
+   * IPC event handler for 'electron-store-set-saved'.
+   * This event is triggered when a request is made to set a saved value in the savedJsons store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {string} property - The property to set the data for.
+   * @param {SavedJsonData[]} val - An array of saved JSON data objects.
+   * @returns {void} - Returns void.
+   */
+  ipcMain.handle(
+    "electron-store-set-saved",
+    (_event, property: string, val: SavedJsonData[]): void => {
+      savedJsons.set(property, val);
+    }
+  );
 });

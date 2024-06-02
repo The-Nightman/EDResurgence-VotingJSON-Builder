@@ -1,6 +1,7 @@
 /// <reference types="vite-plugin-electron/electron-env" />
 
-import { IpcRenderer } from 'electron';
+import { IpcRenderer } from "electron";
+import { SavedJsonData, UserConfig } from "./interfaces";
 
 declare namespace NodeJS {
   interface ProcessEnv {
@@ -17,15 +18,15 @@ declare namespace NodeJS {
      * │
      * ```
      */
-    APP_ROOT: string
+    APP_ROOT: string;
     /** /dist/ or /public/ */
-    VITE_PUBLIC: string
+    VITE_PUBLIC: string;
   }
 }
 
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
-  ipcRenderer: import('electron').IpcRenderer
+  ipcRenderer: import("electron").IpcRenderer;
 }
 
 // Used in Main process, expose in `main.ts`
@@ -64,11 +65,48 @@ export interface MyIpcRenderer extends IpcRenderer {
    * @returns A promise that resolves when the help dialog is opened.
    */
   openHelp(): Promise<void>;
+
+  /**
+   * Represents the user configuration data store.
+   */
+  userConfig: {
+    /**
+     * Retrieves the user configuration object.
+     * @returns The user configuration object.
+     * Reuglarly, 1 param is required minimum but this can be omitted to return the full object from store
+     */
+    get(): UserConfig;
+
+    /**
+     * Sets the user configuration object.
+     * @param object - The user configuration object.
+     */
+    set(object: UserConfig): void;
+  };
+
+  /**
+   * Represents the saved JSON data store.
+   */
+  savedJsons: {
+    /**
+     * Retrieves the saved JSON data.
+     * @param key - The key to retrieve the data for.
+     * @returns An array of saved JSON data objects.
+     */
+    get(key: string): SavedJsonData[];
+
+    /**
+     * Sets the saved JSON data.
+     * @param property - The property to set the data for.
+     * @param val - An array of saved JSON data objects.
+     */
+    set(property: string, val: SavedJsonData[]): void;
+  };
 }
 
 // Add `MyIpcRenderer` to `ipcRenderer` and add to the `window` object
 declare global {
   interface Window {
-    ipcRenderer: MyIpcRenderer
+    ipcRenderer: MyIpcRenderer;
   }
 }
