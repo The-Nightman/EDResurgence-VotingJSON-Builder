@@ -1,5 +1,15 @@
+import { Check, Save } from "@mui/icons-material";
+import { MapObj, SavedJsonData, TypeObj } from "../interfaces";
+import { useState } from "react";
+
+interface JsonData {
+  maps: MapObj[];
+  types: TypeObj[];
+}
+
 interface SaveFilesDialogProps {
   onResolve: () => void;
+  jsonData: JsonData;
 }
 
 /**
@@ -11,7 +21,13 @@ interface SaveFilesDialogProps {
  * @param {Function} props.onResolve - The callback function to resolve the blocking promise.
  * @returns {JSX.Element} The rendered SaveFilesDialog component.
  */
-export const SaveFilesDialog = ({ onResolve }: SaveFilesDialogProps) => {
+export const SaveFilesDialog = ({
+  onResolve,
+  jsonData,
+}: SaveFilesDialogProps) => {
+  const [jsonName, setJsonName] = useState<string>("");
+  const [saved, setSaved] = useState<boolean>(false);
+
   /**
    * Handles the click event for the button.
    * Fires the onResolve callback fn to resolve the blocking promise allowing the async fn to continue.
@@ -20,13 +36,52 @@ export const SaveFilesDialog = ({ onResolve }: SaveFilesDialogProps) => {
     onResolve();
   };
 
+  /**
+   * Handles the json store save operation by retrieving the saved JSON list from the electron store,
+   * creating a new saved JSON object, and updating the electron store with the new saved JSON list.
+   * Finally, it sets the state to indicate that the save operation was successful.
+   */
+  const handleSave = async () => {
+    const savedJsonList: SavedJsonData[] = await window.ipcRenderer.invoke(
+      "electron-store-get-saved",
+      "savedJsons"
+    );
+    const savedJson: SavedJsonData = {
+      name: jsonName,
+      date: Date.now(),
+      data: jsonData,
+    };
+    window.ipcRenderer.invoke("electron-store-set-saved", "savedJsons", [
+      ...savedJsonList,
+      savedJson,
+    ]);
+    setSaved(true);
+  };
+
   return (
     <div
       role="alertdialog"
       aria-label="Save Files Dialog"
-      className="flex flex-col h-full min-w-[60%] w-min my-4 mx-auto"
+      className="flex flex-col min-w-[60%] w-min my-4 mx-auto"
     >
       <h2 className="text-5xl">SAVING JSON</h2>
+      <label className="relative flex flex-col mb-4 text-xl">
+        Save To Builder (optional):
+        <input
+          className="px-1 rounded-md bg-[#a3bbd8] text-lg text-black font-sans"
+          type="text"
+          onChange={(e) => setJsonName(e.target.value)}
+        />
+        <button
+          className="absolute bottom-0 right-0 rounded-r-md px-1 text-white hover:bg-[#963E15] active:bg-[#53220C] hover:text-lime-400 active:text-lime-600"
+          title="Save JSON to builder"
+          aria-label="Save JSON to builder"
+          onClick={handleSave}
+          disabled={jsonName.length === 0 || saved}
+        >
+          {saved ? <Check /> : <Save />}
+        </button>
+      </label>
       <p className="text-lg">
         The download links for mods cannot be guaranteed to be up to date
         releases, work or be provided at all. Please check your{" "}
