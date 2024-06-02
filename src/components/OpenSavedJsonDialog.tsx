@@ -77,7 +77,11 @@ export const OpenSavedJsonDialog = ({
     >
       <h2 className="text-5xl">OPEN SAVED JSON</h2>
       <div className="mt-4">
-        <strong>
+        <p className="mb-4 text-lg">
+          Please make sure to load your folder containing your maps and game
+          variants folders to render the forms correctly.
+        </p>
+        <strong className="text-lg">
           Loading a JSON will save any changes made, please cancel before
           loading a json to undo deletions.
         </strong>
