@@ -8,7 +8,7 @@ import {
   SettingsDialog,
   OpenSavedJsonDialog,
 } from "./components";
-import { MapObj, MapsVariantsData, TypeObj } from "./interfaces";
+import { MapObj, MapsVariantsData, SavedJsonData, TypeObj } from "./interfaces";
 import {
   Add,
   CloseOutlined,
@@ -120,7 +120,7 @@ const App = () => {
     const newPromise = new Promise<void>((resolve) => {
       setDialogState({
         show: true,
-        content: <SaveFilesDialog onResolve={resolve} />,
+        content: <SaveFilesDialog jsonData={jsonData} onResolve={resolve} />,
       });
     });
     // wait for the promise to resolve
@@ -190,16 +190,23 @@ const App = () => {
     }
   };
 
+  /**
+   * Handles the action of opening a saved JSON file.
+   * 
+   * @async
+   * @returns {Promise<void | SavedJsonData>} A promise that resolves with void or a SavedJsonData object.
+   */
   const handleOpenSavedJson = async () => {
     // create a new blocking promise and set the dialog state with the SettingsDialog component
-    const newPromise = new Promise<void>((resolve) => {
+    // resolves with void or SavedJsonData object if resolved with the object to elevate
+    const newPromise = new Promise<SavedJsonData | void>((resolve) => {
       setDialogState({
         show: true,
         content: <OpenSavedJsonDialog onResolve={resolve} />,
       });
     });
-    // wait for the promise to resolve
-    await newPromise;
+    // wait for the promise to resolve, elevate json data if not void
+    const jsonData: SavedJsonData | void = await newPromise;
     // set the dialog state to false and the dialog content to an empty fragment after promise resolved
     setDialogState({ show: false, content: <></> });
   };
@@ -210,6 +217,7 @@ const App = () => {
    * The SettingsDialog component resolves the promise when the user performs an action firing the promise resolve.
    * The dialog state is then set to false and the dialog content is set to an empty fragment.
    *
+   * @async
    * @returns {Promise<void>} A promise that resolves when the settings dialog is closed.
    */
   const handleOpenSettings = async () => {
