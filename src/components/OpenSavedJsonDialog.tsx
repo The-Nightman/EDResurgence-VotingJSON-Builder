@@ -73,9 +73,9 @@ export const OpenSavedJsonDialog = ({
     <div
       role="alertdialog"
       aria-label="Save Files Dialog"
-      className="flex flex-col h-screen min-w-[60%] w-min my-4 mx-auto"
+      className="flex flex-col h-screen w-[70%] my-4 mx-auto"
     >
-      <h2 className="text-5xl">OPEN SAVED JSON</h2>
+      <h2 className="sr-only">OPEN SAVED JSON</h2>
       <div className="mt-4">
         <p className="mb-4 text-lg">
           Please make sure to load your folder containing your maps and game

@@ -24,10 +24,10 @@ export const OpenFolderDialog = ({ onResolve }: OpenDialogProps) => {
     <div
       role="alertdialog"
       aria-label="Open Folder Dialog"
-      className="flex flex-col h-full min-w-[60%] w-min my-4 mx-auto"
+      className="flex flex-col h-full w-[70%] my-4 mx-auto"
     >
-      <h2 className="text-5xl">OPEN FOLDER</h2>
-      <p className="text-lg">
+      <h2 className="sr-only">OPEN FOLDER</h2>
+      <p className="text-lg mb-6">
         You should select either the{" "}
         <strong className="font-normal underline">data</strong> folder inside
         your ElDewrito 0.7 install located at{" "}

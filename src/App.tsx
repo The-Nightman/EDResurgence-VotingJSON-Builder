@@ -28,6 +28,7 @@ interface JsonData {
 interface DialogState {
   show: boolean;
   content: React.ReactElement;
+  headertext: string;
 }
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
   const [dialogState, setDialogState] = useState<DialogState>({
     show: false,
     content: <></>,
+    headertext: "",
   });
   const [mapsVariantsData, setMapsVariantsData] = useState<MapsVariantsData>({
     maps: [],
@@ -119,12 +121,13 @@ const App = () => {
         setDialogState({
           show: true,
           content: <OpenFolderDialog onResolve={resolve} />,
+          headertext: "OPEN FOLDER",
         });
       });
       // wait for the promise to resolve
       await newPromise;
       // set the dialog state to false and the dialog content to an empty fragment after promise resolved
-      setDialogState({ show: false, content: <></> });
+      setDialogState({ show: false, content: <></>, headertext: "" });
       // open the folder and get the maps and variants data through the ipcRenderer bridge
       const folderData: { maps: string[]; types: string[] } | null =
         await window.ipcRenderer.openFolder();
@@ -165,12 +168,13 @@ const App = () => {
       setDialogState({
         show: true,
         content: <SaveFilesDialog jsonData={jsonData} onResolve={resolve} />,
+        headertext: "SAVING JSON",
       });
     });
     // wait for the promise to resolve
     await newPromise;
     // set the dialog state to false and the dialog content to an empty fragment after promise resolved
-    setDialogState({ show: false, content: <></> });
+    setDialogState({ show: false, content: <></>, headertext: "" });
     // initialize a new object to store the mods json data with dynamic key names and nested object package_url values
     const modsJson: { [key: string]: { package_url: string } } = {};
     // clone the types array and remove unused or unnecessary property from each type object
@@ -285,12 +289,13 @@ const App = () => {
       setDialogState({
         show: true,
         content: <OpenSavedJsonDialog onResolve={resolve} />,
+        headertext: "OPEN SAVED JSON",
       });
     });
     // wait for the promise to resolve, elevate json data if not void
     const jsonData: SavedJsonData | void = await newPromise;
     // set the dialog state to false and the dialog content to an empty fragment after promise resolved
-    setDialogState({ show: false, content: <></> });
+    setDialogState({ show: false, content: <></>, headertext: "" });
     if (jsonData) {
       // set the open saved json details with the name and date from the elevated json data
       setOpenSavedJsonDetails({ name: jsonData.name, date: jsonData.date });
@@ -316,12 +321,13 @@ const App = () => {
       setDialogState({
         show: true,
         content: <SettingsDialog onResolve={resolve} />,
+        headertext: "SETTINGS",
       });
     });
     // wait for the promise to resolve
     await newPromise;
     // set the dialog state to false and the dialog content to an empty fragment after promise resolved
-    setDialogState({ show: false, content: <></> });
+    setDialogState({ show: false, content: <></>, headertext: "" });
   };
 
   /**
@@ -481,7 +487,12 @@ const App = () => {
       </header>
       <main className="flex flex-col mb-16 px-8 text-[#aac0da] dark:text-white select-none">
         {/* dialog component render inside main content for accessibility */}
-        {dialogState.show && <DialogFoundation child={dialogState.content} />}
+        {dialogState.show && (
+          <DialogFoundation
+            headertext={dialogState.headertext}
+            child={dialogState.content}
+          />
+        )}
         <div className="flex flex-row justify-between mt-16">
           <Tooltip
             title={`VANILLA MAPS: set the maps array with the vanilla maps, default option.

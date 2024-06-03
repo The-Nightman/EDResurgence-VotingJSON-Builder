@@ -29,9 +29,9 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
     <div
       role="alertdialog"
       aria-label="Save Files Dialog"
-      className="flex flex-col h-full min-w-[60%] w-min my-4 mx-auto"
+      className="flex flex-col h-full w-[70%] my-4 mx-auto"
     >
-      <h2 className="text-5xl">SETTINGS</h2>
+      <h2 className="sr-only">SETTINGS</h2>
       <div className="flex flex-col gap-6 text-xl text-white [&_select]:text-black [&_input]:text-black [&_select]:bg-[#a3bbd8] [&_input]:bg-[#a3bbd8] [&_select]:font-sans [&_input]:font-sans [&_select]:rounded [&_input]:rounded">
         <label className="flex flex-col">
           Background

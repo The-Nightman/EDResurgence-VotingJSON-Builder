@@ -63,9 +63,9 @@ export const SaveFilesDialog = ({
     <div
       role="alertdialog"
       aria-label="Save Files Dialog"
-      className="flex flex-col min-w-[60%] w-min my-4 mx-auto"
+      className="flex flex-col w-[70%] my-4 mx-auto"
     >
-      <h2 className="text-5xl">SAVING JSON</h2>
+      <h2 className="sr-only">SAVING JSON</h2>
       <form className="mb-4" onSubmit={(e) => handleSave(e)}>
         <label className="relative flex flex-col text-xl">
           Save To Builder (optional):
