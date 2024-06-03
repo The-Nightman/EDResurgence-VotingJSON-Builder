@@ -107,6 +107,18 @@ const App = () => {
     }
   }, [settings.volume]);
 
+  // use this to set the background if video element does not render based on selection
+  useEffect(() => {
+    if (
+      settings.background === "bg-slate-700" ||
+      settings.background === "bg-stone-700"
+    ) {
+      document.body.classList.add(settings.background);
+    } else {
+      document.body.classList.remove("bg-slate-700", "bg-stone-700");
+    }
+  }, [settings.background]);
+
   /**
    * Handler function for opening a folder and setting the maps and variants data.
    * Handles the frontend operation of the functions defined in the main process and preload context bridges.
@@ -408,17 +420,20 @@ const App = () => {
 
   return (
     <>
-      <video
-        ref={videoRef}
-        src={backgroundData[settings.background]}
-        autoPlay
-        loop
-        className="fixed h-screen w-screen object-cover -z-50"
-      />
+      {settings.background !== "bg-slate-700" &&
+        settings.background !== "bg-stone-700" && (
+          <video
+            ref={videoRef}
+            src={backgroundData[settings.background]}
+            autoPlay
+            loop
+            className="fixed h-screen w-screen object-cover -z-50"
+          />
+        )}
       {/* titlebar for frameless window, z-2000 guarantees to render above everything */}
       <header
         id="titlebar"
-        className="fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] border-[#aac0da] backdrop-blur-lg bg-[#0a0e14a4] text-[#aac0da] dark:text-white select-none z-[2000]"
+        className={`fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] border-[#aac0da] backdrop-blur-lg bg-[#0a0e14a4] ${settings.highContrastText} select-none z-[2000]`}
       >
         <h1 className="fixed top-[0.375rem] left-1/2 -translate-x-1/2 text-xl font-bold">
           ElDewrito Resurgence 0.7 JSON Builder
@@ -430,6 +445,8 @@ const App = () => {
           >
             <button
               className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+              title="Open dropdown menu"
+              aria-label="Open dropdown menu"
               draggable="false"
               onClick={() => setOpenDropDown(true)}
             >
@@ -439,6 +456,8 @@ const App = () => {
               <>
                 <button
                   className="py-1 px-2 bg-[#0a0e14a4] hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+                  title="Open Saved Jsons"
+                  aria-label="Open Saved Jsons"
                   draggable="false"
                   onClick={handleOpenSavedJson}
                 >
@@ -446,6 +465,8 @@ const App = () => {
                 </button>
                 <button
                   className="py-1 px-2 bg-[#0a0e14a4] hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+                  title="Open Folder"
+                  aria-label="Open Folder"
                   draggable="false"
                   onClick={handleFolder}
                 >
@@ -460,6 +481,9 @@ const App = () => {
                 ? "bg-gray-500"
                 : "hover:bg-[#963E15] active:bg-[#53220C]"
             } text-xl`}
+            title="Save Json"
+            aria-label="Save Json"
+            aria-description="Save the JSON data to the selected directory. Minimum 2 saved game types required to save."
             draggable="false"
             onClick={handleSave}
             disabled={jsonData.types.length < 2}
@@ -470,6 +494,8 @@ const App = () => {
         <div>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl text-white"
+            title="Settings"
+            aria-label="Settings menu"
             draggable="false"
             onClick={handleOpenSettings}
           >
@@ -477,6 +503,8 @@ const App = () => {
           </button>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl hover:text-white active:text-white"
+            title="Help"
+            aria-label="Help"
             draggable="false"
             onClick={window.ipcRenderer.openHelp}
           >
@@ -484,6 +512,8 @@ const App = () => {
           </button>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            title="Minimize window"
+            aria-label="Minimize window"
             draggable="false"
             onClick={window.ipcRenderer.minimizeWindow}
           >
@@ -491,6 +521,8 @@ const App = () => {
           </button>
           <button
             className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl active:text-black"
+            title="Close window"
+            aria-label="Close window"
             draggable="false"
             onClick={window.ipcRenderer.closeWindow}
           >
@@ -498,7 +530,9 @@ const App = () => {
           </button>
         </div>
       </header>
-      <main className="flex flex-col mb-16 px-8 text-[#aac0da] dark:text-white select-none">
+      <main
+        className={`flex flex-col mb-16 px-8 ${settings.highContrastText} dark:text-white select-none`}
+      >
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && (
           <DialogFoundation
@@ -560,6 +594,9 @@ const App = () => {
         </ol>
         <button
           className="flex flex-row py-1 justify-center items-center hover:bg-[#963E15] active:bg-[#53220C] text-xl hover:text-white active:text-white"
+          title="Add type"
+          aria-label="Add type"
+          aria-description="Create a new type form to add to the JSON data."
           draggable="false"
           onClick={createNewType}
         >

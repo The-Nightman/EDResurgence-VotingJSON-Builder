@@ -316,6 +316,7 @@ export const TypeForm = ({
               aria-description={`${
                 formState.formCollapsed ? "Expand" : "Collapse"
               } the Game Type form`}
+              aria-expanded={!formState.formCollapsed}
               // due to nature of tailwind and component libraries an arbitrary value is used to target the svg element
               // [&] represents the parent and [&_p] represents a p tag child of the element that the style is applied to
               // this equates to .element > p in raw css
@@ -374,7 +375,7 @@ export const TypeForm = ({
           </div>
         </div>
         {/* Main form content */}
-        <div className={`${formState.formCollapsed && "hidden"}`}>
+        <div className={`${formState.formCollapsed ? "hidden" : "flex flex-col gap-y-4"}`}>
           {/* Variant Settings */}
           <fieldset className="flex flex-row flex-wrap gap-4 justify-between px-2">
             <legend>Variant Settings</legend>
@@ -423,7 +424,7 @@ export const TypeForm = ({
                 Modpack Select
                 <select
                   name="Modpack select"
-                  aria-description="Select a Modpack to play with the Variant"
+                  aria-description="Select a Modpack to play with the Variant, selecting a modpack will enable a list of any maps included in the mod"
                   id="modPack"
                   onChange={handleModPackChange}
                   value={typeFormData.modPack}
@@ -730,6 +731,7 @@ export const TypeForm = ({
                       ? "Open Vanilla Maps"
                       : "Close Vanilla Maps"
                   }
+                  aria-expanded={!formState.vanillaMapsCollapsed}
                   onClick={() =>
                     setFormState({
                       ...formState,
@@ -823,6 +825,7 @@ export const TypeForm = ({
                         ? "Open Mod Base Maps"
                         : "Close Mod Base Maps"
                     }
+                    aria-expanded={!formState.modMapsCollapsed}
                     onClick={() =>
                       setFormState({
                         ...formState,

@@ -28,8 +28,9 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
   return (
     <div
       role="alertdialog"
-      aria-label="Save Files Dialog"
+      aria-label="Settings Dialog"
       className="flex flex-col h-full w-[70%] my-4 mx-auto"
+      aria-modal="true"
     >
       <h2 className="sr-only">SETTINGS</h2>
       <div className="flex flex-col gap-6 text-xl text-white [&_select]:text-black [&_input]:text-black [&_select]:bg-[#a3bbd8] [&_input]:bg-[#a3bbd8] [&_select]:font-sans [&_input]:font-sans [&_select]:rounded [&_input]:rounded">
@@ -46,6 +47,8 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
             <option value="forge">Forge</option>
             <option value="c322">C-322</option>
             <option value="highcharity">High Charity</option>
+            <option value="bg-slate-700">Ringside Slate</option>
+            <option value="bg-stone-700">UNSC Gunmetal</option>
           </select>
         </label>
         <label className="flex flex-col">
@@ -67,22 +70,23 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
           />
         </label>
         <div className="flex flex-col">
-          <label>
-            <input
-              className="mr-1"
-              type="checkbox"
-              name="High contrast text"
-              id="highContrastText"
-              defaultChecked={settings.highContrastText}
-              onChange={(e) =>
-                setSettings({ ...settings, highContrastText: e.target.checked })
-              }
-            />
+          <label className="flex flex-col">
             High contrast text
-            {settings.highContrastText ? " (Enabled)" : " (Disabled)"}
+            <select
+              className="mb-2"
+              name="High contrast text Options"
+              id="highContrastText"
+              defaultValue={settings.highContrastText}
+              onChange={(e) =>
+                setSettings({ ...settings, highContrastText: e.target.value })
+              }
+            >
+              <option value="text-[#aac0da]">Default</option>
+              <option value="text-white">High Contrast White</option>
+            </select>
           </label>
-          <span className="text-4xl text-[#aac0da]">
-            aAbBcC/<span className="text-white">aAbBcC</span>
+          <span className={`text-4xl ${settings.highContrastText}`}>
+            aAbBcC
           </span>
         </div>
         <label>

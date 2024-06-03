@@ -72,8 +72,9 @@ export const OpenSavedJsonDialog = ({
   return (
     <div
       role="alertdialog"
-      aria-label="Save Files Dialog"
+      aria-label="Open Saved JSON Dialog"
       className="flex flex-col h-screen w-[70%] my-4 mx-auto"
+      aria-modal="true"
     >
       <h2 className="sr-only">OPEN SAVED JSON</h2>
       <div className="mt-4">

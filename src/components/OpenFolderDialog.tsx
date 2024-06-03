@@ -25,6 +25,7 @@ export const OpenFolderDialog = ({ onResolve }: OpenDialogProps) => {
       role="alertdialog"
       aria-label="Open Folder Dialog"
       className="flex flex-col h-full w-[70%] my-4 mx-auto"
+      aria-modal="true"
     >
       <h2 className="sr-only">OPEN FOLDER</h2>
       <p className="text-lg mb-6">

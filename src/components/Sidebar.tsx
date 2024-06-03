@@ -38,6 +38,7 @@ export const Sidebar = ({ mapsVariantsData }: SidebarProps) => {
         } [&_svg]:h-14 [&_svg>path]:scale-[1.75] text-[#5d616cea] dark:text-white hover:text-[#963E15] active:text-[#53220C]`}
         aria-label={`${sidebarOpen ? "Close" : "Open"} sidebar`}
         title={`${sidebarOpen ? "Close" : "Open"} sidebar`}
+        aria-expanded={sidebarOpen}
         draggable="false"
         // toggle sidebarOpen state to open and close the sidebar
         onClick={() => setSidebarOpen(!sidebarOpen)}
