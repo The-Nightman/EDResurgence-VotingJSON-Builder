@@ -53,6 +53,7 @@ const App = () => {
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
   const { settings } = useContext(SettingsContext);
   const mapOptionsRef = useRef<HTMLSelectElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const backgroundData: { [key: string]: string } = {
     forge: forge,
@@ -97,6 +98,13 @@ const App = () => {
       setOpenSavedJsonDetails(null);
     }
   }, [jsonData.types]);
+
+  // use this to set the volume of the video element based on the settings context
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.volume = settings.volume;
+    }
+  }, [settings.volume]);
 
   /**
    * Handler function for opening a folder and setting the maps and variants data.
@@ -392,6 +400,7 @@ const App = () => {
   return (
     <>
       <video
+        ref={videoRef}
         src={backgroundData[settings.background]}
         autoPlay
         loop
