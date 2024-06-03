@@ -7,7 +7,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./assets/ConduitITCRegular.otf') format('opentype');
+  src: url('./assets/Conduit-ITC.woff') format('woff');
 }
 
 body {
@@ -29,4 +29,12 @@ body::-webkit-scrollbar {
 *::-webkit-scrollbar-thumb {
   background-color: #a3bbd8;
   border-radius: 20px;
+}
+
+#titlebar {
+  -webkit-app-region: drag;
+}
+
+#titlebar button {
+  -webkit-app-region: no-drag;
 }

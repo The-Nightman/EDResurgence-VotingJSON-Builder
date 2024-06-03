@@ -1,7 +1,9 @@
-import { app, BrowserWindow, dialog, ipcMain } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "fs/promises";
+import { initStores } from "./utils/initStores";
+import { SavedJsonData, UserConfig } from "./interfaces";
 
 // get the current directory when running the application
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -30,10 +32,17 @@ let win: BrowserWindow | null;
 
 function createWindow() {
   win = new BrowserWindow({
+    width: 800,
+    height: 900,
+    minWidth: 700,
+    minHeight: 800,
+    maxWidth: 900,
+    maxHeight: 1000,
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
     },
     autoHideMenuBar: true,
+    frame: false,
   });
 
   // Test active push message to Renderer-process.
@@ -58,6 +67,9 @@ app.on("window-all-closed", () => {
     win = null;
   }
 });
+
+// Initialize the user configuration and saved JSON data stores
+const { userConfig, savedJsons } = initStores();
 
 app.on("activate", () => {
   // On OS X it's common to re-create a window in the app when the
@@ -174,6 +186,116 @@ app.whenReady().then(() => {
           }
         }
       });
+    }
+  );
+
+  /**
+   * Handle minimize-window IPC event from renderer process.
+   * The function minimizes the window.
+   *
+   * @async
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   *
+   * @returns {Promise<void>} - Returns a promise that is void on resolve.
+   *
+   * @example
+   * /// Minimizes the window.
+   * ipcMain.handle("minimize-window", async (_event) => {
+   *   /// function body
+   * });
+   */
+  ipcMain.handle("minimize-window", async (_event): Promise<void> => {
+    win?.minimize(); // minimize the window
+  });
+
+  /**
+   * Handle close-window IPC event from renderer process.
+   * The function closes the window.
+   *
+   * @async
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   *
+   * @returns {Promise<void>} - Returns a promise that is void on resolve.
+   *
+   * @example
+   * /// Closes the window.
+   * ipcMain.handle("close-window", async (_event) => {
+   *   /// function body
+   * });
+   */
+  ipcMain.handle("close-window", async (_event): Promise<void> => {
+    win?.close(); // close the window
+  });
+
+  /**
+   * Handle open-help IPC event from renderer process.
+   * The function opens the repo page in the users default browser.
+   *
+   * @async
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   *
+   * @returns {Promise<void>} - Returns a promise that is void on resolve.
+   *
+   * @example
+   * /// Opens the help file.
+   * ipcMain.handle("open-help", async (_event) => {
+   *   /// function body
+   * });
+   */
+  ipcMain.handle("open-help", async (_event): Promise<void> => {
+    shell.openExternal(
+      "https://github.com/The-Nightman/EDResurgence-VotingJSON-Builder"
+    );
+  });
+
+  /**
+   * IPC event handler for 'electron-store-get-cfg'.
+   * This event is triggered when a request is made to get a configuration value from the userConfig store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {string} key - The key to retrieve the data for.
+   * @returns {UserConfig} - The configuration settings object.
+   */
+  ipcMain.handle("electron-store-get-cfg", (_event, key): UserConfig => {
+    return userConfig.get(key);
+  });
+
+  /**
+   * IPC event handler for 'electron-store-set-cfg'.
+   * This event is triggered when a request is made to set a configuration value in the userConfig store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {UserConfig} object - The configuration object to set.
+   * @returns {void} - Returns void.
+   */
+  ipcMain.handle(
+    "electron-store-set-cfg",
+    (_event, object: UserConfig): void => {
+      userConfig.set(object);
+    }
+  );
+
+  /**
+   * IPC event handler for 'electron-store-get-saved'.
+   * This event is triggered when a request is made to get a saved value from the savedJsons store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {string} key - The key to retrieve the data for.
+   * @returns {SavedJsonData[]} - An array of saved JSON data objects.
+   */
+  ipcMain.handle("electron-store-get-saved", (_event, key): SavedJsonData[] => {
+    return savedJsons.get(key);
+  });
+
+  /**
+   * IPC event handler for 'electron-store-set-saved'.
+   * This event is triggered when a request is made to set a saved value in the savedJsons store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {string} property - The property to set the data for.
+   * @param {SavedJsonData[]} val - An array of saved JSON data objects.
+   * @returns {void} - Returns void.
+   */
+  ipcMain.handle(
+    "electron-store-set-saved",
+    (_event, property: string, val: SavedJsonData[]): void => {
+      savedJsons.set(property, val);
     }
   );
 });
