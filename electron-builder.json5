@@ -5,7 +5,8 @@
   "asar": true,
   "productName": "ED Resurgence 0.7 JSON Builder",
   "directories": {
-    "output": "release/${version}"
+    "output": "release/${version}",
+    "buildResources": "resources"
   },
   "files": [
     "dist",
@@ -15,7 +16,8 @@
     "target": [
       "dmg"
     ],
-    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+    "artifactName": "${productName}-Mac-${version}-Installer.${ext}",
+    "icon": "icon.png"
   },
   "win": {
     "target": [
@@ -26,7 +28,8 @@
         ]
       }
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    "artifactName": "${productName}-Windows-${version}-Setup.${ext}",
+    "icon": "icon.png"
   },
   "nsis": {
     "oneClick": false,
@@ -38,6 +41,7 @@
     "target": [
       "AppImage"
     ],
-    "artifactName": "${productName}-Linux-${version}.${ext}"
+    "artifactName": "${productName}-Linux-${version}.${ext}",
+    "icon": "512x512.png"
   }
 }
