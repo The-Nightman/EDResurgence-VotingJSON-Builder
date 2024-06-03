@@ -430,6 +430,8 @@ const App = () => {
           >
             <button
               className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+              title="Open dropdown menu"
+              aria-label="Open dropdown menu"
               draggable="false"
               onClick={() => setOpenDropDown(true)}
             >
@@ -439,6 +441,8 @@ const App = () => {
               <>
                 <button
                   className="py-1 px-2 bg-[#0a0e14a4] hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+                  title="Open Saved Jsons"
+                  aria-label="Open Saved Jsons"
                   draggable="false"
                   onClick={handleOpenSavedJson}
                 >
@@ -446,6 +450,8 @@ const App = () => {
                 </button>
                 <button
                   className="py-1 px-2 bg-[#0a0e14a4] hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+                  title="Open Folder"
+                  aria-label="Open Folder"
                   draggable="false"
                   onClick={handleFolder}
                 >
@@ -460,6 +466,9 @@ const App = () => {
                 ? "bg-gray-500"
                 : "hover:bg-[#963E15] active:bg-[#53220C]"
             } text-xl`}
+            title="Save Json"
+            aria-label="Save Json"
+            aria-description="Save the JSON data to the selected directory. Minimum 2 saved game types required to save."
             draggable="false"
             onClick={handleSave}
             disabled={jsonData.types.length < 2}
@@ -470,6 +479,8 @@ const App = () => {
         <div>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl text-white"
+            title="Settings"
+            aria-label="Settings menu"
             draggable="false"
             onClick={handleOpenSettings}
           >
@@ -477,6 +488,8 @@ const App = () => {
           </button>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl hover:text-white active:text-white"
+            title="Help"
+            aria-label="Help"
             draggable="false"
             onClick={window.ipcRenderer.openHelp}
           >
@@ -484,6 +497,8 @@ const App = () => {
           </button>
           <button
             className="py-1 px-2 hover:bg-[#963E15] active:bg-[#53220C] text-xl"
+            title="Minimize window"
+            aria-label="Minimize window"
             draggable="false"
             onClick={window.ipcRenderer.minimizeWindow}
           >
@@ -491,6 +506,8 @@ const App = () => {
           </button>
           <button
             className="py-1 px-2 hover:bg-red-600 active:bg-red-400 text-xl active:text-black"
+            title="Close window"
+            aria-label="Close window"
             draggable="false"
             onClick={window.ipcRenderer.closeWindow}
           >
@@ -560,6 +577,9 @@ const App = () => {
         </ol>
         <button
           className="flex flex-row py-1 justify-center items-center hover:bg-[#963E15] active:bg-[#53220C] text-xl hover:text-white active:text-white"
+          title="Add type"
+          aria-label="Add type"
+          aria-description="Create a new type form to add to the JSON data."
           draggable="false"
           onClick={createNewType}
         >
