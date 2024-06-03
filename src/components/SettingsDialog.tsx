@@ -68,22 +68,23 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
           />
         </label>
         <div className="flex flex-col">
-          <label>
-            <input
-              className="mr-1"
-              type="checkbox"
-              name="High contrast text"
-              id="highContrastText"
-              defaultChecked={settings.highContrastText}
-              onChange={(e) =>
-                setSettings({ ...settings, highContrastText: e.target.checked })
-              }
-            />
+          <label className="flex flex-col">
             High contrast text
-            {settings.highContrastText ? " (Enabled)" : " (Disabled)"}
+            <select
+              className="mb-2"
+              name="High contrast text Options"
+              id="highContrastText"
+              defaultValue={settings.highContrastText}
+              onChange={(e) =>
+                setSettings({ ...settings, highContrastText: e.target.value })
+              }
+            >
+              <option value="text-[#aac0da]">Default</option>
+              <option value="text-white">High Contrast White</option>
+            </select>
           </label>
-          <span className="text-4xl text-[#aac0da]">
-            aAbBcC/<span className="text-white">aAbBcC</span>
+          <span className={`text-4xl ${settings.highContrastText}`}>
+            aAbBcC
           </span>
         </div>
         <label>

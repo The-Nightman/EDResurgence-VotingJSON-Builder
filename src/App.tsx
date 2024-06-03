@@ -418,7 +418,7 @@ const App = () => {
       {/* titlebar for frameless window, z-2000 guarantees to render above everything */}
       <header
         id="titlebar"
-        className="fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] border-[#aac0da] backdrop-blur-lg bg-[#0a0e14a4] text-[#aac0da] dark:text-white select-none z-[2000]"
+        className={`fixed top-0 flex flex-row h-9 w-full justify-between border-b-[1px] border-[#aac0da] backdrop-blur-lg bg-[#0a0e14a4] ${settings.highContrastText} select-none z-[2000]`}
       >
         <h1 className="fixed top-[0.375rem] left-1/2 -translate-x-1/2 text-xl font-bold">
           ElDewrito Resurgence 0.7 JSON Builder
@@ -515,7 +515,7 @@ const App = () => {
           </button>
         </div>
       </header>
-      <main className="flex flex-col mb-16 px-8 text-[#aac0da] dark:text-white select-none">
+      <main className={`flex flex-col mb-16 px-8 ${settings.highContrastText} dark:text-white select-none`}>
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && (
           <DialogFoundation

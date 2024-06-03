@@ -3,14 +3,14 @@ import { createContext, useEffect, useState } from "react";
 interface Settings {
   background: string;
   volume: number;
-  highContrastText: boolean;
+  highContrastText: string;
   advancedMapOptions: boolean;
 }
 
 const defaultSettings: Settings = {
   background: "forgeBackground",
   volume: 0.5,
-  highContrastText: false,
+  highContrastText: "text-[#aac0da]",
   advancedMapOptions: false,
 };
 
@@ -40,14 +40,6 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
     };
     fetchSettings();
   }, []);
-
-  useEffect(() => {
-    if (settings.highContrastText) {
-      document.body.classList.add("dark");
-    } else if (!settings.highContrastText) {
-      document.body.classList.remove("dark");
-    }
-  }, [settings.highContrastText]);
 
   return (
     <SettingsContext.Provider value={{ settings, setSettings }}>
