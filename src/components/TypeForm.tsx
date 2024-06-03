@@ -100,6 +100,47 @@ export const TypeForm = ({
     { displayName: "Valhalla", mapName: "riverworld" },
   ];
 
+  // Vanilla base-game maps
+  const vanillaVariants: string[] = [
+    "Slayer",
+    "Team Slayer",
+    "Rockets",
+    "Elimination",
+    "Duel",
+    "team_swat",
+    "skirmish",
+    "Oddball",
+    "Team Oddball",
+    "Lowball",
+    "Ninjaball",
+    "Rocketball",
+    "Crazy King",
+    "Team King",
+    "Mosh Pit",
+    "Multi Flag",
+    "One Flag",
+    "Tank Flag",
+    "Attrition CTF",
+    "Assault",
+    "Neutral Assault",
+    "One Bomb",
+    "Attrition Assault",
+    "Territories",
+    "Land Grab",
+    "Flag Rally",
+    "Juggernaut",
+    "Mad Dash",
+    "Ninjanaut",
+    "Infection",
+    "Save One Bullet",
+    "Alpha Zombie",
+    "Hide and Seek",
+    "VIP",
+    "One Sided VIP",
+    "Escort",
+    "Influential VIP",
+  ];
+
   // List of possible supported server commands
   // Map this for server overrides inputs to reduce bloat code
   const commands: { name: string; id: string }[] = [
@@ -362,6 +403,14 @@ export const TypeForm = ({
                     Select a Variant
                   </option>
                   {mapsVariantsData.variants.map((variant) => (
+                    <option key={variant} value={variant}>
+                      {variant}
+                    </option>
+                  ))}
+                  <option value="" disabled>
+                    --Vanilla Modes--
+                  </option>
+                  {vanillaVariants.map((variant) => (
                     <option key={variant} value={variant}>
                       {variant}
                     </option>
