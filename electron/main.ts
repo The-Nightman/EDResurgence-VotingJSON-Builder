@@ -38,6 +38,7 @@ function createWindow() {
     minHeight: 800,
     maxWidth: 900,
     maxHeight: 1000,
+    icon: path.join(__dirname, "assets", "EDJSON.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
     },
