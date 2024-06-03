@@ -375,7 +375,7 @@ export const TypeForm = ({
           </div>
         </div>
         {/* Main form content */}
-        <div className={`${formState.formCollapsed && "hidden"}`}>
+        <div className={`${formState.formCollapsed ? "hidden" : "flex flex-col gap-y-4"}`}>
           {/* Variant Settings */}
           <fieldset className="flex flex-row flex-wrap gap-4 justify-between px-2">
             <legend>Variant Settings</legend>
