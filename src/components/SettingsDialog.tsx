@@ -28,7 +28,7 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
   return (
     <div
       role="alertdialog"
-      aria-label="Save Files Dialog"
+      aria-label="Settings Dialog"
       className="flex flex-col h-full w-[70%] my-4 mx-auto"
     >
       <h2 className="sr-only">SETTINGS</h2>
