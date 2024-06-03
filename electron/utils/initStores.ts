@@ -23,7 +23,7 @@ export const initStores = () => {
     },
     background: {
       type: "string",
-      default: "forgebackground",
+      default: "forge",
     },
     advancedMapOptions: {
       type: "boolean",
