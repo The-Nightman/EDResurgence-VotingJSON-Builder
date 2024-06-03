@@ -43,8 +43,9 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
               setSettings({ ...settings, background: e.target.value })
             }
           >
-            <option value="forgeBackground">Forge</option>
-            <option value="test">...</option>
+            <option value="forge">Forge</option>
+            <option value="c322">C-322</option>
+            <option value="highcharity">High Charity</option>
           </select>
         </label>
         <label className="flex flex-col">

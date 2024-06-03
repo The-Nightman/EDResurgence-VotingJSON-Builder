@@ -16,7 +16,7 @@ import {
   MinimizeOutlined,
   Settings,
 } from "@mui/icons-material";
-import { forgeBackground } from "./assets";
+import { forge, c322, highcharity } from "./assets";
 import { SettingsContext } from "./contexts/SettingsContext";
 import { Tooltip } from "@mui/material";
 
@@ -61,7 +61,9 @@ const App = () => {
   const mapOptionsRef = useRef<HTMLSelectElement>(null);
 
   const backgroundData: { [key: string]: string } = {
-    forgeBackground: forgeBackground,
+    forge: forge,
+    c322: c322,
+    highcharity: highcharity,
   };
 
   // map options object with error maps, vanilla maps and chosen maps
@@ -396,12 +398,11 @@ const App = () => {
   return (
     <>
       <video
+        src={backgroundData[settings.background]}
         autoPlay
         loop
         className="fixed h-screen w-screen object-cover -z-50"
-      >
-        <source src={backgroundData[settings.background]} type="video/webm" />
-      </video>
+      />
       {/* titlebar for frameless window, z-2000 guarantees to render above everything */}
       <header
         id="titlebar"
