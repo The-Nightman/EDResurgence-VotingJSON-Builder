@@ -30,6 +30,7 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
       role="alertdialog"
       aria-label="Settings Dialog"
       className="flex flex-col h-full w-[70%] my-4 mx-auto"
+      aria-modal="true"
     >
       <h2 className="sr-only">SETTINGS</h2>
       <div className="flex flex-col gap-6 text-xl text-white [&_select]:text-black [&_input]:text-black [&_select]:bg-[#a3bbd8] [&_input]:bg-[#a3bbd8] [&_select]:font-sans [&_input]:font-sans [&_select]:rounded [&_input]:rounded">

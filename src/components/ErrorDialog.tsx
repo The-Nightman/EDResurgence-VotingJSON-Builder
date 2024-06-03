@@ -28,6 +28,7 @@ export const ErrorDialog = ({ errMsg, onResolve }: ErrorDialogProps) => {
       role="alertdialog"
       aria-label="Error Dialog"
       className="flex flex-col h-full w-[70%] my-4 mx-auto"
+      aria-modal="true"
     >
       <h2 className="sr-only">ERROR</h2>
       <div className="flex flex-col gap-y-4 text-xl">

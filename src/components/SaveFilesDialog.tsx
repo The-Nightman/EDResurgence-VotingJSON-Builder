@@ -64,6 +64,7 @@ export const SaveFilesDialog = ({
       role="alertdialog"
       aria-label="Save Files Dialog"
       className="flex flex-col w-[70%] my-4 mx-auto"
+      aria-modal="true"
     >
       <h2 className="sr-only">SAVING JSON</h2>
       <form className="mb-4" onSubmit={(e) => handleSave(e)}>
