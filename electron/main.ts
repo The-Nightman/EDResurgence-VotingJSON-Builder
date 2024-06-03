@@ -244,7 +244,7 @@ app.whenReady().then(() => {
    */
   ipcMain.handle("open-help", async (_event): Promise<void> => {
     shell.openExternal(
-      "https://github.com/The-Nightman/EDResurgence-VotingJSON-Builder"
+      "https://github.com/The-Nightman/EDResurgence-VotingJSON-Builder?tab=readme-ov-file#edresurgence-votingjson-builder"
     );
   });
 
