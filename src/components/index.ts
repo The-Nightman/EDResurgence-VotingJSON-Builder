@@ -6,6 +6,7 @@ import { OpenFolderDialog } from "./OpenFolderDialog";
 import { SaveFilesDialog } from "./SaveFilesDialog";
 import { SettingsDialog } from "./SettingsDialog";
 import { OpenSavedJsonDialog } from "./OpenSavedJsonDialog";
+import { ErrorDialog } from "./ErrorDialog";
 
 // export the components to allow for imports from one source
 // making code more concise and easier to read
@@ -17,4 +18,5 @@ export {
   SaveFilesDialog,
   SettingsDialog,
   OpenSavedJsonDialog,
+  ErrorDialog,
 };

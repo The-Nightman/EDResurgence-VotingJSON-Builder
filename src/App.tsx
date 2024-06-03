@@ -7,6 +7,7 @@ import {
   SaveFilesDialog,
   SettingsDialog,
   OpenSavedJsonDialog,
+  ErrorDialog,
 } from "./components";
 import { MapObj, MapsVariantsData, SavedJsonData, TypeObj } from "./interfaces";
 import {
@@ -144,12 +145,16 @@ const App = () => {
       }
     } catch (error) {
       // catch errors i.e. if the map_variants and game_variants directories are not found
-      // set the toast state with the error message
-      // setToastState({
-      //   show: true,
-      //   message: (error as Error).message,
-      //   color: "red",
-      // });
+      // create a new blocking promise and set the dialog state with the ErrorDialog component
+      const newPromise = new Promise<void>((resolve) => {
+        setDialogState({
+          show: true,
+          content: <ErrorDialog errMsg={error as Error} onResolve={resolve} />,
+          headertext: "ERROR",
+        });
+      });
+      await newPromise;
+      setDialogState({ show: false, content: <></>, headertext: "" });
     }
   };
 
@@ -266,12 +271,16 @@ const App = () => {
       await window.ipcRenderer.saveFile(files);
     } catch (error) {
       // catch errors if the file write operation fails
-      // set the toast state with the error message
-      // setToastState({
-      //   show: true,
-      //   message: (error as Error).message,
-      //   color: "red",
-      // });
+      // create a new blocking promise and set the dialog state with the ErrorDialog component
+      const newPromise = new Promise<void>((resolve) => {
+        setDialogState({
+          show: true,
+          content: <ErrorDialog errMsg={error as Error} onResolve={resolve} />,
+          headertext: "ERROR",
+        });
+      });
+      await newPromise;
+      setDialogState({ show: false, content: <></>, headertext: "" });
     }
   };
 
