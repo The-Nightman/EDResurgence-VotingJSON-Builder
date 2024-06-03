@@ -33,13 +33,7 @@ interface DialogState {
 
 const App = () => {
   const [jsonData, setJsonData] = useState<JsonData>({
-    // fallback maps for test build purposes
-    maps: [
-      { displayName: "High Ground", mapName: "deadlock" },
-      { displayName: "High Ground", mapName: "deadlock" },
-      { displayName: "High Ground", mapName: "deadlock" },
-      { displayName: "High Ground", mapName: "deadlock" },
-    ],
+    maps: [],
     types: [],
   });
   const [openSavedJsonDetails, setOpenSavedJsonDetails] = useState<{
