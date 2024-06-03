@@ -1,5 +1,5 @@
 export interface UserConfig {
-  highContrastText: boolean;
+  highContrastText: string;
   volume: number;
   background: string;
   advancedMapOptions: boolean;

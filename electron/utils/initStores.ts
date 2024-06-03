@@ -12,8 +12,8 @@ export const initStores = () => {
   // Schema for user configuration data
   const userConfigSchema = {
     highContrastText: {
-      type: "boolean",
-      default: false,
+      type: "string",
+      default: "text-[#aac0da]",
     },
     volume: {
       type: "number",
@@ -117,12 +117,21 @@ export const initStores = () => {
       default: [],
     },
   };
-
   // Create the electron-store instances for persistent storage
   // userConfig is used to store user configuration data
 const userConfig = new Store({
     name: "userConfig",
     schema: userConfigSchema,
+    migrations: {
+      '1.0.0': (store) => {
+        // Check if the value is a boolean
+        const highContrastText = store.get('highContrastText');
+        if (typeof highContrastText === 'boolean') {
+          // If it is, convert it to a string
+          store.set('highContrastText', "text-[#aac0da]");
+        }
+      },
+    }
 });
 // savedJsons is used to store saved JSON data
 const savedJsons = new Store({
