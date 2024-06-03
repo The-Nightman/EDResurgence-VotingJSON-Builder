@@ -107,6 +107,18 @@ const App = () => {
     }
   }, [settings.volume]);
 
+  // use this to set the background if video element does not render based on selection
+  useEffect(() => {
+    if (
+      settings.background === "bg-slate-700" ||
+      settings.background === "bg-stone-700"
+    ) {
+      document.body.classList.add(settings.background);
+    } else {
+      document.body.classList.remove("bg-slate-700", "bg-stone-700");
+    }
+  }, [settings.background]);
+
   /**
    * Handler function for opening a folder and setting the maps and variants data.
    * Handles the frontend operation of the functions defined in the main process and preload context bridges.
@@ -408,13 +420,16 @@ const App = () => {
 
   return (
     <>
-      <video
-        ref={videoRef}
-        src={backgroundData[settings.background]}
-        autoPlay
-        loop
-        className="fixed h-screen w-screen object-cover -z-50"
-      />
+      {settings.background !== "bg-slate-700" &&
+        settings.background !== "bg-stone-700" && (
+          <video
+            ref={videoRef}
+            src={backgroundData[settings.background]}
+            autoPlay
+            loop
+            className="fixed h-screen w-screen object-cover -z-50"
+          />
+        )}
       {/* titlebar for frameless window, z-2000 guarantees to render above everything */}
       <header
         id="titlebar"
@@ -515,7 +530,9 @@ const App = () => {
           </button>
         </div>
       </header>
-      <main className={`flex flex-col mb-16 px-8 ${settings.highContrastText} dark:text-white select-none`}>
+      <main
+        className={`flex flex-col mb-16 px-8 ${settings.highContrastText} dark:text-white select-none`}
+      >
         {/* dialog component render inside main content for accessibility */}
         {dialogState.show && (
           <DialogFoundation
