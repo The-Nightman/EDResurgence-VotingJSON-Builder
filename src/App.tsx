@@ -17,7 +17,7 @@ import {
   MinimizeOutlined,
   Settings,
 } from "@mui/icons-material";
-import { forge, c322, highcharity } from "./assets";
+import { forge, c322, highcharity, mombassa } from "./assets";
 import { SettingsContext } from "./contexts/SettingsContext";
 import { Tooltip } from "@mui/material";
 
@@ -60,6 +60,7 @@ const App = () => {
     forge: forge,
     c322: c322,
     highcharity: highcharity,
+    mombassa: mombassa,
   };
 
   // map options object with error maps, vanilla maps and chosen maps
