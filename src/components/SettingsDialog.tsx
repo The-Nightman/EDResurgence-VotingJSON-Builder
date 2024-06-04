@@ -47,6 +47,7 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
             <option value="forge">Forge</option>
             <option value="c322">C-322</option>
             <option value="highcharity">High Charity</option>
+            <option value="mombassa">New Mombassa</option>
             <option value="bg-slate-700">Ringside Slate</option>
             <option value="bg-stone-700">UNSC Gunmetal</option>
           </select>
