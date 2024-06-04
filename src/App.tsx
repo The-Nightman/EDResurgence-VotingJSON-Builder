@@ -114,6 +114,7 @@ const App = () => {
       settings.background === "bg-slate-700" ||
       settings.background === "bg-stone-700"
     ) {
+      document.body.classList.remove("bg-slate-700", "bg-stone-700");
       document.body.classList.add(settings.background);
     } else {
       document.body.classList.remove("bg-slate-700", "bg-stone-700");
