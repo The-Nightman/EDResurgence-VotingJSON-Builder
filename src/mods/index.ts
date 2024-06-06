@@ -38,7 +38,10 @@ import tbpScarif from "./tbpscarif";
 import tbpUtapau from "./tbputapau";
 import verdigris from "./verdigris";
 import whiteout from "./whiteout";
+// Import all mods above this line in alphabetical order
 
+
+// Export all mods in alphabetical order
 export const mods = [
   animeintro,
   assimilation,
