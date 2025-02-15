@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "fs/promises";
 import { initStores } from "./utils/initStores";
-import { SavedJsonData, UserConfig } from "./interfaces";
+import { SavedJsonData, UserConfig, ModData } from "./interfaces";
 
 // get the current directory when running the application
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -69,7 +69,7 @@ app.on("window-all-closed", () => {
 });
 
 // Initialize the user configuration and saved JSON data stores
-const { userConfig, savedJsons } = initStores();
+const { userConfig, savedJsons, savedMods } = initStores();
 
 app.on("activate", () => {
   // On OS X it's common to re-create a window in the app when the
@@ -298,4 +298,15 @@ app.whenReady().then(() => {
       savedJsons.set(property, val);
     }
   );
+
+  /**
+   * IPC event handler for 'electron-store-get-mods'.
+   * This event is triggered when a request is made to get a saved value from the savedMods store.
+   * @param {Electron.IpcMainInvokeEvent} _event - IPC event object, unused in the function.
+   * @param {string} key - The key to retrieve the data for.
+   * @returns {ModData[]} - An array of saved mods objects.
+   */
+  ipcMain.handle("electron-store-get-mods", (_event, key): ModData[] => {
+    return savedMods.get(key);
+  });
 });
