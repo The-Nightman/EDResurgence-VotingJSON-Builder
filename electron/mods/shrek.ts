@@ -1,7 +1,7 @@
 import { ModData } from "../interfaces";
 
 const shrek: ModData = {
-  modName: "Scary Maze",
+  modName: "Shrek",
   modMaps: [],
 };
 
