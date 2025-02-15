@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MapObj, MapsVariantsData, ModData, TypeObj } from "../interfaces";
+import { MapsVariantsData, ModData, TypeObj } from "../interfaces";
 import { mods } from "../mods";
 import { Tooltip } from "@mui/material";
 import {
@@ -8,6 +8,7 @@ import {
   KeyboardArrowUpOutlined,
   SaveAsOutlined,
 } from "@mui/icons-material";
+import TypeFormMaps from "./TypeFormMaps";
 
 interface TypeFormProps {
   mapsVariantsData: MapsVariantsData;
@@ -83,22 +84,6 @@ export const TypeForm = ({
       setSelectedMod({ modName: "", modMaps: [] });
     }
   }, [typeFormData.modPack]);
-
-  // Vanilla base-game maps
-  const vanillaMaps: MapObj[] = [
-    { displayName: "Diamondback", mapName: "s3d_avalanche" },
-    { displayName: "Edge", mapName: "s3d_edge" },
-    { displayName: "Guardian", mapName: "guardian" },
-    { displayName: "High Ground", mapName: "deadlock" },
-    { displayName: "Icebox", mapName: "s3d_turf" },
-    { displayName: "Last Resort", mapName: "zanzibar" },
-    { displayName: "Narrows", mapName: "chill" },
-    { displayName: "Reactor", mapName: "s3d_reactor" },
-    { displayName: "Sandtrap", mapName: "shrine" },
-    { displayName: "Standoff", mapName: "bunkerworld" },
-    { displayName: "The Pit", mapName: "cyberdyne" },
-    { displayName: "Valhalla", mapName: "riverworld" },
-  ];
 
   // Vanilla base-game maps
   const vanillaVariants: string[] = [
@@ -375,7 +360,11 @@ export const TypeForm = ({
           </div>
         </div>
         {/* Main form content */}
-        <div className={`${formState.formCollapsed ? "hidden" : "flex flex-col gap-y-4"}`}>
+        <div
+          className={`${
+            formState.formCollapsed ? "hidden" : "flex flex-col gap-y-4"
+          }`}
+        >
           {/* Variant Settings */}
           <fieldset className="flex flex-row flex-wrap gap-4 justify-between px-2">
             <legend>Variant Settings</legend>
@@ -705,251 +694,14 @@ export const TypeForm = ({
             })}
           </fieldset>
           {/* Maps select */}
-          <fieldset className="flex flex-col mt-4 gap-4">
-            <legend>Maps</legend>
-            <span className="sr-only">
-              Select the Maps to play with the Variant
-            </span>
-            {/* Vanilla Base-Game Maps */}
-            <fieldset className="flex flex-col">
-              <legend className="sr-only">Vanilla Maps</legend>
-              <div className="flex flex-row justify-between">
-                <span className="self-center text-lg" aria-hidden>
-                  Vanilla Maps
-                </span>
-                <button
-                  className="hover:text-[#963E15] active:text-[#53220C]"
-                  type="button"
-                  draggable="false"
-                  title={
-                    formState.vanillaMapsCollapsed
-                      ? "Open Vanilla Maps"
-                      : "Close Vanilla Maps"
-                  }
-                  aria-label={
-                    formState.vanillaMapsCollapsed
-                      ? "Open Vanilla Maps"
-                      : "Close Vanilla Maps"
-                  }
-                  aria-expanded={!formState.vanillaMapsCollapsed}
-                  onClick={() =>
-                    setFormState({
-                      ...formState,
-                      vanillaMapsCollapsed: !formState.vanillaMapsCollapsed,
-                    })
-                  }
-                >
-                  {formState.vanillaMapsCollapsed ? (
-                    <KeyboardArrowUpOutlined fontSize="large" />
-                  ) : (
-                    <KeyboardArrowDownOutlined fontSize="large" />
-                  )}
-                </button>
-              </div>
-              <div
-                className={`${
-                  formState.vanillaMapsCollapsed ? "hidden" : "flex"
-                } flex-row flex-wrap gap-4 px-2`}
-              >
-                {vanillaMaps.map((map) => (
-                  <label className="w-32" key={map.mapName}>
-                    <input
-                      className="mr-1"
-                      type="checkbox"
-                      name={map.displayName}
-                      id={map.displayName}
-                      // check if the map is already in the specificMaps array
-                      // this check is used for loading jsondata instead of making fresh json
-                      checked={typeFormData.specificMaps.some(
-                        (specificMap) => specificMap.mapName === map.mapName
-                      )}
-                      onChange={(e) => {
-                        // store boolean and check if the input is checked
-                        const checked = e.target.checked;
-                        if (checked) {
-                          // update the typeFormData state with the new map
-                          setTypeFormData({
-                            // clone typeFormData
-                            ...typeFormData,
-                            // clone the specificMaps array and append the map to the array
-                            specificMaps: [
-                              ...typeFormData.specificMaps,
-                              {
-                                displayName: map.displayName,
-                                mapName: map.mapName,
-                              },
-                            ],
-                          });
-                        }
-                        // if the input is not checked
-                        else {
-                          // update the typeFormData state with the map removed
-                          setTypeFormData({
-                            // clone typeFormData
-                            ...typeFormData,
-                            // filter the specificMaps array to remove the map
-                            specificMaps: typeFormData.specificMaps.filter(
-                              (item) =>
-                                // check if the input map value is not the same as the map in the array
-                                // this will only return maps that are not the same as the input map
-                                item.mapName !== map.mapName
-                            ),
-                          });
-                        }
-                      }}
-                    />
-                    {map.displayName}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-            {/* Mod Base Maps */}
-            {selectedMod.modMaps.length > 0 && (
-              <fieldset className="flex flex-col">
-                <legend className="sr-only">Mod Base Maps</legend>
-                <div className="flex flex-row justify-between">
-                  <span className="self-center text-lg" aria-hidden>
-                    Mod Base Maps
-                  </span>
-                  <button
-                    className="hover:text-[#963E15] active:text-[#53220C]"
-                    type="button"
-                    draggable="false"
-                    title={
-                      formState.modMapsCollapsed
-                        ? "Open Mod Base Maps"
-                        : "Close Mod Base Maps"
-                    }
-                    aria-label={
-                      formState.modMapsCollapsed
-                        ? "Open Mod Base Maps"
-                        : "Close Mod Base Maps"
-                    }
-                    aria-expanded={!formState.modMapsCollapsed}
-                    onClick={() =>
-                      setFormState({
-                        ...formState,
-                        modMapsCollapsed: !formState.modMapsCollapsed,
-                      })
-                    }
-                  >
-                    {formState.modMapsCollapsed ? (
-                      <KeyboardArrowUpOutlined fontSize="large" />
-                    ) : (
-                      <KeyboardArrowDownOutlined fontSize="large" />
-                    )}
-                  </button>
-                </div>
-                <div
-                  className={`${
-                    formState.modMapsCollapsed ? "hidden" : "flex"
-                  } flex-row flex-wrap gap-4 px-2`}
-                >
-                  {selectedMod.modMaps.map((map) => (
-                    <label className="w-32" key={map.mapName}>
-                      <input
-                        className="mr-1"
-                        type="checkbox"
-                        name={map.displayName}
-                        id={map.displayName}
-                        // check if the map is already in the specificMaps array
-                        // this check is used for loading jsondata instead of making fresh json
-                        checked={typeFormData.specificMaps.some(
-                          (specificMap) => specificMap.mapName === map.mapName
-                        )}
-                        onChange={(e) => {
-                          // store boolean and check if the input is checked
-                          const checked = e.target.checked;
-                          if (checked) {
-                            // update the typeFormData state with the new map
-                            setTypeFormData({
-                              // clone typeFormData
-                              ...typeFormData,
-                              // clone the specificMaps array and append the map to the array
-                              specificMaps: [
-                                ...typeFormData.specificMaps,
-                                {
-                                  displayName: map.displayName,
-                                  mapName: map.mapName,
-                                },
-                              ],
-                            });
-                          }
-                          // if the input is not checked
-                          else {
-                            // update the typeFormData state with the map removed
-                            setTypeFormData({
-                              // clone typeFormData
-                              ...typeFormData,
-                              // filter the specificMaps array to remove the map
-                              specificMaps: typeFormData.specificMaps.filter(
-                                (item) =>
-                                  // check if the input map value is not the same as the map in the array
-                                  // this will only return maps that are not the same as the input map
-                                  item.mapName !== map.mapName
-                              ),
-                            });
-                          }
-                        }}
-                      />
-                      {map.displayName}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-            )}
-            {/* Custom Maps */}
-            <fieldset className="flex flex-row flex-wrap gap-4 px-2">
-              <legend className="text-lg -ml-[0.375rem]">Your Maps</legend>
-              {mapsVariantsData.maps.map((map) => (
-                <label className="w-32" key={map}>
-                  <input
-                    className="mr-1"
-                    type="checkbox"
-                    name={map}
-                    id={map}
-                    // check if the map is already in the specificMaps array
-                    // this check is used for loading jsondata instead of making fresh json
-                    checked={typeFormData.specificMaps.some(
-                      (specificMap) => specificMap.mapName === map
-                    )}
-                    onChange={(e) => {
-                      // store boolean and check if the input is checked
-                      const checked = e.target.checked;
-                      if (checked) {
-                        // update the typeFormData state with the new map
-                        setTypeFormData({
-                          // clone typeFormData
-                          ...typeFormData,
-                          // clone the specificMaps array and append the map to the array
-                          specificMaps: [
-                            ...typeFormData.specificMaps,
-                            { displayName: map, mapName: map },
-                          ],
-                        });
-                      }
-                      // if the input is not checked
-                      else {
-                        // update the typeFormData state with the map removed
-                        setTypeFormData({
-                          // clone typeFormData
-                          ...typeFormData,
-                          // filter the specificMaps array to remove the map
-                          specificMaps: typeFormData.specificMaps.filter(
-                            (item) =>
-                              // check if the input map value is not the same as the map in the array
-                              // this will only return maps that are not the same as the input map
-                              item.displayName !== map || item.mapName !== map
-                          ),
-                        });
-                      }
-                    }}
-                  />
-                  {map}
-                </label>
-              ))}
-            </fieldset>
-          </fieldset>
+          <TypeFormMaps
+            formState={formState}
+            setFormState={setFormState}
+            typeFormData={typeFormData}
+            setTypeFormData={setTypeFormData}
+            mapsVariantsData={mapsVariantsData}
+            selectedMod={selectedMod}
+          />
         </div>
       </form>
     </li>
