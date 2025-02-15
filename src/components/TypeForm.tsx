@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MapsVariantsData, ModData, TypeObj } from "../interfaces";
-import { mods } from "../mods";
 import { Tooltip } from "@mui/material";
 import {
   DeleteOutlineSharp,
@@ -9,6 +8,7 @@ import {
   SaveAsOutlined,
 } from "@mui/icons-material";
 import TypeFormMaps from "./TypeFormMaps";
+import { ModsContext } from "../contexts/ModsContext";
 
 interface TypeFormProps {
   mapsVariantsData: MapsVariantsData;
@@ -63,6 +63,7 @@ export const TypeForm = ({
     // collapse mod maps checkboxes only
     modMapsCollapsed: true,
   });
+  const { mods } = useContext(ModsContext);
 
   useEffect(() => {
     // if a saved type form is passed in, set the typeFormData to the saved form

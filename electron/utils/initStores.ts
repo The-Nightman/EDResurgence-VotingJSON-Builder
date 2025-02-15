@@ -1,4 +1,5 @@
 import Store from "electron-store";
+import { mods } from "../mods";
 
 /**
  * Initializes the electron-store instances for persistent storage.
@@ -122,6 +123,39 @@ export const initStores = () => {
       default: [],
     },
   };
+
+  // Schema for saved mods
+  const SavedModsSchema = {
+    mods: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          modName: {
+            type: "string",
+          },
+          version: {
+            type: "string",
+          },
+          modMaps: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                displayName: {
+                  type: "string",
+                },
+                mapName: {
+                  type: "string",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+
   // Create the electron-store instances for persistent storage
   // userConfig is used to store user configuration data
   const userConfig = new Store({
@@ -148,5 +182,13 @@ export const initStores = () => {
     schema: savedJsonsSchema,
   });
 
-  return { userConfig, savedJsons };
+  const savedMods = new Store({
+    name: "savedMods",
+    schema: SavedModsSchema,
+    defaults: {
+      mods: mods
+    }
+  });
+
+  return { userConfig, savedJsons, savedMods };
 };
