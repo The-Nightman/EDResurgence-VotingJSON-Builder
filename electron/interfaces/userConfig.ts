@@ -3,4 +3,5 @@ export interface UserConfig {
   volume: number;
   background: string;
   advancedMapOptions: boolean;
+  searchBarThreshold: number;
 }

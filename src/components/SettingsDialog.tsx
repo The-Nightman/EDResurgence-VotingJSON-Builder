@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
+import { Tooltip } from "@mui/material";
 
 interface SettingsDialogProps {
   onResolve: () => void;
@@ -90,6 +91,30 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
             aAbBcC
           </span>
         </div>
+        <Tooltip
+          title={`This is the threshold for the number of custom map variants to be loaded 
+            into the JSON builder before the search bar is rendered. Default value is 30
+          `}
+          arrow
+        >
+          <label className="flex flex-col">
+            Map Searchbar Threshold
+            <input
+              className="pl-1"
+              name="Searchbar Threshold"
+              id="searchbarThresh"
+              type="number"
+              min={0}
+              defaultValue={settings.searchBarThreshold}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  searchBarThreshold: Number(e.target.value),
+                })
+              }
+            />
+          </label>
+        </Tooltip>
         <label>
           <input
             className="mr-1"

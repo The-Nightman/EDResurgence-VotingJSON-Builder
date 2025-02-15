@@ -29,6 +29,11 @@ export const initStores = () => {
       type: "boolean",
       default: false,
     },
+    searchBarThreshold: {
+      type: "number",
+      minimum: 0,
+      default: 30,
+    },
   };
 
   // Schema for saved JSON data
@@ -119,25 +124,29 @@ export const initStores = () => {
   };
   // Create the electron-store instances for persistent storage
   // userConfig is used to store user configuration data
-const userConfig = new Store({
+  const userConfig = new Store({
     name: "userConfig",
     schema: userConfigSchema,
     migrations: {
-      '1.0.0': (store) => {
+      "1.0.0": (store) => {
         // Check if the value is a boolean
-        const highContrastText = store.get('highContrastText');
-        if (typeof highContrastText === 'boolean') {
+        const highContrastText = store.get("highContrastText");
+        if (typeof highContrastText === "boolean") {
           // If it is, convert it to a string
-          store.set('highContrastText', "text-[#aac0da]");
+          store.set("highContrastText", "text-[#aac0da]");
         }
       },
-    }
-});
-// savedJsons is used to store saved JSON data
-const savedJsons = new Store({
+      "1.0.1": (store) => {
+        // Add a setting to set search bar threshold
+        store.set("searchBarThreshold", 30);
+      },
+    },
+  });
+  // savedJsons is used to store saved JSON data
+  const savedJsons = new Store({
     name: "savedJsons",
     schema: savedJsonsSchema,
-});
+  });
 
-return { userConfig, savedJsons };
+  return { userConfig, savedJsons };
 };
