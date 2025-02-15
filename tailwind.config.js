@@ -6,7 +6,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage:{
+        'search-icon' : "url('./assets/search.svg')"
+      }
+    },
   },
   plugins: [],
 }
