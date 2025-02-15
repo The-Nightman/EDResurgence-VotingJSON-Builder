@@ -90,6 +90,20 @@ export const SettingsDialog = ({ onResolve }: SettingsDialogProps) => {
             aAbBcC
           </span>
         </div>
+        <label className="flex flex-col">
+          Map Searchbar Threshold
+          <input
+            className="pl-1"
+            name="Searchbar Threshold"
+            id="searchbarThresh"
+            type="number"
+            min={0}
+            defaultValue={settings.searchBarThreshold}
+            onChange={(e) =>
+              setSettings({ ...settings, searchBarThreshold: Number(e.target.value) })
+            }
+          />
+        </label>
         <label>
           <input
             className="mr-1"

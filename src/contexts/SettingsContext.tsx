@@ -5,6 +5,7 @@ interface Settings {
   volume: number;
   highContrastText: string;
   advancedMapOptions: boolean;
+  searchBarThreshold: number;
 }
 
 const defaultSettings: Settings = {
@@ -12,6 +13,7 @@ const defaultSettings: Settings = {
   volume: 0.5,
   highContrastText: "text-[#aac0da]",
   advancedMapOptions: false,
+  searchBarThreshold: 30,
 };
 
 interface SettingsProviderProps {
