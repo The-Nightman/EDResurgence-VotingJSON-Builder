@@ -3,11 +3,14 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { SettingsProvider } from "./contexts/SettingsContext.tsx";
+import { ModsProvider } from "./contexts/ModsContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <SettingsProvider>
-      <App />
+      <ModsProvider>
+        <App />
+      </ModsProvider>
     </SettingsProvider>
   </React.StrictMode>
 );
