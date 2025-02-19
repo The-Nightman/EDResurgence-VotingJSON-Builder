@@ -1,7 +1,7 @@
 import { ModData } from "../interfaces";
 
 const reachAnniversaryMP: ModData = {
-  modName: "Reach Anniversary Multiplayer",
+  modName: "Reach Anniversary Multiplayer 2",
   modMaps: [
     { displayName: "Sword Base", mapName: "20_sword_slayer" },
     { displayName: "Powerhouse", mapName: "30_settlement" },
@@ -23,6 +23,16 @@ const reachAnniversaryMP: ModData = {
     { displayName: "Tempest", mapName: "dlc_medium" },
     { displayName: "Anchor 9", mapName: "dlc_slayer" },
     { displayName: "Highlands", mapName: "trainingpreserve" },
+    { displayName: "Overlook", mapName: "ff10_prototype" },
+    { displayName: "Courtyard", mapName: "ff20_courtyard" },
+    { displayName: "Waterfront", mapName: "ff30_waterfront" },
+    { displayName: "Corvette", mapName: "ff45_corvette" },
+    { displayName: "Beachhead", mapName: "ff50_park" },
+    { displayName: "Outpost", mapName: "ff60_airview" },
+    { displayName: "Glacier", mapName: "ff60_icecave" },
+    { displayName: "Holdout", mapName: "ff70_holdout" },
+    { displayName: "Unearthed", mapName: "ff_unearthed" },
+    { displayName: "Installation 04", mapName: "cex_ff_halo" },
   ],
 };
 
